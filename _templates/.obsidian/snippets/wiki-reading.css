@@ -1,0 +1,268 @@
+/* ==========================================================================
+   Wiki Reading — 知识库阅读优化样式
+   基于 Minimal / Things 主题理念，专为长时间阅读设计
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. 根变量定义（适配明暗模式）
+   -------------------------------------------------------------------------- */
+.theme-dark {
+  --wiki-accent: #5e81ac;
+  --wiki-accent-light: #81a1c1;
+  --wiki-bg-primary: #1e1e1e;
+  --wiki-bg-secondary: #252526;
+  --wiki-bg-tertiary: #2d2d30;
+  --wiki-text-normal: #d4d4d4;
+  --wiki-text-muted: #808080;
+  --wiki-text-faint: #606060;
+  --wiki-border: #3e3e42;
+  --wiki-line-height: 1.75;
+  --wiki-paragraph-spacing: 0.8em;
+}
+
+.theme-light {
+  --wiki-accent: #4c7899;
+  --wiki-accent-light: #6c9abb;
+  --wiki-bg-primary: #fafafa;
+  --wiki-bg-secondary: #f5f5f5;
+  --wiki-bg-tertiary: #eeeeee;
+  --wiki-text-normal: #2e2e2e;
+  --wiki-text-muted: #666666;
+  --wiki-text-faint: #999999;
+  --wiki-border: #e0e0e0;
+  --wiki-line-height: 1.75;
+  --wiki-paragraph-spacing: 0.8em;
+}
+
+/* --------------------------------------------------------------------------
+   2. 全局排版优化
+   -------------------------------------------------------------------------- */
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-preview-view {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: var(--wiki-line-height);
+  color: var(--wiki-text-normal);
+}
+
+/* 阅读宽度限制 */
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer,
+.markdown-source-view.is-readable-line-width .cm-content {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. 标题样式（层级分明，色彩语义化）
+   -------------------------------------------------------------------------- */
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6,
+.HyperMD-header-1,
+.HyperMD-header-2,
+.HyperMD-header-3,
+.HyperMD-header-4,
+.HyperMD-header-5,
+.HyperMD-header-6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.8em;
+  margin-bottom: 0.6em;
+  letter-spacing: -0.01em;
+}
+
+.markdown-preview-view h1,
+.HyperMD-header-1 {
+  font-size: 2em;
+  color: var(--wiki-accent);
+  border-bottom: 2px solid var(--wiki-border);
+  padding-bottom: 0.3em;
+}
+
+.markdown-preview-view h2,
+.HyperMD-header-2 {
+  font-size: 1.65em;
+  color: var(--wiki-text-normal);
+  border-bottom: 1px solid var(--wiki-border);
+  padding-bottom: 0.25em;
+}
+
+.markdown-preview-view h3,
+.HyperMD-header-3 {
+  font-size: 1.35em;
+  color: var(--wiki-accent-light);
+}
+
+.markdown-preview-view h4,
+.HyperMD-header-4 {
+  font-size: 1.15em;
+  color: var(--wiki-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.markdown-preview-view h5,
+.HyperMD-header-5 {
+  font-size: 1em;
+  color: var(--wiki-text-muted);
+}
+
+.markdown-preview-view h6,
+.HyperMD-header-6 {
+  font-size: 0.9em;
+  color: var(--wiki-text-faint);
+  font-weight: 500;
+}
+
+/* 标题前的装饰符号 */
+.markdown-preview-view h2::before {
+  content: "§";
+  color: var(--wiki-accent);
+  margin-right: 0.4em;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.markdown-preview-view h3::before {
+  content: "›";
+  color: var(--wiki-accent-light);
+  margin-right: 0.4em;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   4. 段落与间距
+   -------------------------------------------------------------------------- */
+.markdown-preview-view p {
+  margin-block-start: var(--wiki-paragraph-spacing);
+  margin-block-end: var(--wiki-paragraph-spacing);
+}
+
+/* 列表优化 */
+.markdown-preview-view ul,
+.markdown-preview-view ol {
+  padding-left: 1.6em;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.markdown-preview-view li {
+  margin-block-start: 0.25em;
+  margin-block-end: 0.25em;
+}
+
+/* 任务列表 */
+.markdown-preview-view .task-list-item-checkbox {
+  margin-right: 0.5em;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   5. 引用块（笔记摘录样式）
+   -------------------------------------------------------------------------- */
+.markdown-preview-view blockquote,
+.markdown-source-view.mod-cm6 .cm-quote {
+  border-left: 3px solid var(--wiki-accent);
+  background-color: var(--wiki-bg-secondary);
+  padding: 0.8em 1em 0.8em 1.2em;
+  margin: 1em 0;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+  color: var(--wiki-text-muted);
+}
+
+.markdown-preview-view blockquote p:first-child {
+  margin-top: 0;
+}
+
+.markdown-preview-view blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. 水平分割线
+   -------------------------------------------------------------------------- */
+.markdown-preview-view hr,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-hr {
+  border: none;
+  border-top: 1px solid var(--wiki-border);
+  margin: 2.5em 0;
+  position: relative;
+}
+
+.markdown-preview-view hr::after {
+  content: "◆";
+  color: var(--wiki-accent);
+  position: absolute;
+  left: 50%;
+  top: -0.6em;
+  background: var(--wiki-bg-primary);
+  padding: 0 0.8em;
+  font-size: 0.75em;
+  transform: translateX(-50%);
+}
+
+/* --------------------------------------------------------------------------
+   7. 表格优化
+   -------------------------------------------------------------------------- */
+.markdown-preview-view table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 0.95em;
+}
+
+.markdown-preview-view th {
+  background-color: var(--wiki-bg-tertiary);
+  color: var(--wiki-accent);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6em 0.8em;
+  border-bottom: 2px solid var(--wiki-accent);
+}
+
+.markdown-preview-view td {
+  padding: 0.5em 0.8em;
+  border-bottom: 1px solid var(--wiki-border);
+}
+
+.markdown-preview-view tr:hover td {
+  background-color: var(--wiki-bg-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   8. Frontmatter / Properties 区域美化
+   -------------------------------------------------------------------------- */
+.markdown-preview-view .metadata-container {
+  background-color: var(--wiki-bg-secondary);
+  border: 1px solid var(--wiki-border);
+  border-radius: 8px;
+  padding: 0.8em 1em;
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
+}
+
+.markdown-preview-view .metadata-container .metadata-property-key {
+  color: var(--wiki-accent);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   9. 编辑模式优化
+   -------------------------------------------------------------------------- */
+.markdown-source-view.mod-cm6 .cm-gutters {
+  background-color: transparent;
+  border-right: 1px solid var(--wiki-border);
+}
+
+.markdown-source-view.mod-cm6 .cm-activeLineGutter {
+  background-color: var(--wiki-bg-secondary);
+}
+
+.markdown-source-view.mod-cm6 .cm-activeLine {
+  background-color: rgba(94, 129, 172, 0.06);
+}

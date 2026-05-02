@@ -1,0 +1,23 @@
+{
+  "backlink": true,
+  "command-palette": true,
+  "daily-notes": false,
+  "editor-status": true,
+  "file-explorer": true,
+  "file-recovery": true,
+  "global-search": true,
+  "graph": true,
+  "markdown-importer": false,
+  "note-composer": true,
+  "outgoing-link": true,
+  "outline": true,
+  "page-preview": true,
+  "slash-command": true,
+  "starred": true,
+  "switcher": true,
+  "sync": false,
+  "tag-pane": true,
+  "templates": true,
+  "word-count": true,
+  "workspaces": false
+}

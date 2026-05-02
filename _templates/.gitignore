@@ -1,0 +1,21 @@
+# Obsidian
+.obsidian/workspace*.json
+.obsidian/.DS_Store
+.obsidian/plugins/*/*
+!.obsidian/plugins/*/data.json
+.obsidian/themes/
+
+# 保留配置（版本控制共享设置）
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/core-plugins.json
+!.obsidian/community-plugins.json
+!.obsidian/snippets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.temp

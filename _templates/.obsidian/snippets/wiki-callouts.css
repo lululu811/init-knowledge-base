@@ -1,0 +1,242 @@
+/* ==========================================================================
+   Wiki Callouts — 知识库 Callout 样式增强
+   语义化颜色 + 现代卡片设计
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   基础 Callout 重置
+   -------------------------------------------------------------------------- */
+.callout {
+  border-radius: 8px;
+  border: none;
+  padding: 1em 1.2em;
+  margin: 1em 0;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--wiki-bg-secondary, #252526);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.callout-title {
+  font-weight: 600;
+  font-size: 0.95em;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.callout-icon {
+  display: flex;
+  align-items: center;
+}
+
+.callout-content {
+  font-size: 0.95em;
+  line-height: 1.7;
+}
+
+.callout-content > p:first-child {
+  margin-top: 0;
+}
+
+.callout-content > p:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   左侧彩色边条（所有 Callout 共享）
+   -------------------------------------------------------------------------- */
+.callout::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 8px 0 0 8px;
+}
+
+/* --------------------------------------------------------------------------
+   各类 Callout 定义
+   -------------------------------------------------------------------------- */
+
+/* NOTE / 笔记 */
+.callout[data-callout="note"] {
+  background-color: rgba(94, 129, 172, 0.08);
+}
+.callout[data-callout="note"]::before {
+  background-color: #5e81ac;
+}
+.callout[data-callout="note"] .callout-title {
+  color: #5e81ac;
+}
+
+/* ABSTRACT / SUMMARY / TLDR / 摘要 */
+.callout[data-callout="abstract"],
+.callout[data-callout="summary"],
+.callout[data-callout="tldr"] {
+  background-color: rgba(163, 190, 140, 0.08);
+}
+.callout[data-callout="abstract"]::before,
+.callout[data-callout="summary"]::before,
+.callout[data-callout="tldr"]::before {
+  background-color: #a3be8c;
+}
+.callout[data-callout="abstract"] .callout-title,
+.callout[data-callout="summary"] .callout-title,
+.callout[data-callout="tldr"] .callout-title {
+  color: #a3be8c;
+}
+
+/* INFO / 信息 */
+.callout[data-callout="info"] {
+  background-color: rgba(129, 161, 193, 0.08);
+}
+.callout[data-callout="info"]::before {
+  background-color: #81a1c1;
+}
+.callout[data-callout="info"] .callout-title {
+  color: #81a1c1;
+}
+
+/* TODO / 待办 */
+.callout[data-callout="todo"] {
+  background-color: rgba(136, 192, 208, 0.08);
+}
+.callout[data-callout="todo"]::before {
+  background-color: #88c0d0;
+}
+.callout[data-callout="todo"] .callout-title {
+  color: #88c0d0;
+}
+
+/* TIP / HINT / IMPORTANT / 提示 */
+.callout[data-callout="tip"],
+.callout[data-callout="hint"],
+.callout[data-callout="important"] {
+  background-color: rgba(235, 203, 139, 0.08);
+}
+.callout[data-callout="tip"]::before,
+.callout[data-callout="hint"]::before,
+.callout[data-callout="important"]::before {
+  background-color: #ebcb8b;
+}
+.callout[data-callout="tip"] .callout-title,
+.callout[data-callout="hint"] .callout-title,
+.callout[data-callout="important"] .callout-title {
+  color: #ebcb8b;
+}
+
+/* SUCCESS / CHECK / DONE / 成功 */
+.callout[data-callout="success"],
+.callout[data-callout="check"],
+.callout[data-callout="done"] {
+  background-color: rgba(163, 190, 140, 0.1);
+}
+.callout[data-callout="success"]::before,
+.callout[data-callout="check"]::before,
+.callout[data-callout="done"]::before {
+  background-color: #a3be8c;
+}
+.callout[data-callout="success"] .callout-title,
+.callout[data-callout="check"] .callout-title,
+.callout[data-callout="done"] .callout-title {
+  color: #a3be8c;
+}
+
+/* WARNING / CAUTION / ATTENTION / 警告 */
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] {
+  background-color: rgba(208, 135, 112, 0.08);
+}
+.callout[data-callout="warning"]::before,
+.callout[data-callout="caution"]::before,
+.callout[data-callout="attention"]::before {
+  background-color: #d08770;
+}
+.callout[data-callout="warning"] .callout-title,
+.callout[data-callout="caution"] .callout-title,
+.callout[data-callout="attention"] .callout-title {
+  color: #d08770;
+}
+
+/* DANGER / ERROR / BUG / FAIL / 危险 */
+.callout[data-callout="danger"],
+.callout[data-callout="error"],
+.callout[data-callout="bug"],
+.callout[data-callout="fail"] {
+  background-color: rgba(191, 97, 106, 0.08);
+}
+.callout[data-callout="danger"]::before,
+.callout[data-callout="error"]::before,
+.callout[data-callout="bug"]::before,
+.callout[data-callout="fail"]::before {
+  background-color: #bf616a;
+}
+.callout[data-callout="danger"] .callout-title,
+.callout[data-callout="error"] .callout-title,
+.callout[data-callout="bug"] .callout-title,
+.callout[data-callout="fail"] .callout-title {
+  color: #bf616a;
+}
+
+/* EXAMPLE / 示例 */
+.callout[data-callout="example"] {
+  background-color: rgba(180, 142, 173, 0.08);
+}
+.callout[data-callout="example"]::before {
+  background-color: #b48ead;
+}
+.callout[data-callout="example"] .callout-title {
+  color: #b48ead;
+}
+
+/* QUOTE / CITE / 引用 */
+.callout[data-callout="quote"],
+.callout[data-callout="cite"] {
+  background-color: rgba(216, 222, 233, 0.05);
+  font-style: italic;
+}
+.callout[data-callout="quote"]::before,
+.callout[data-callout="cite"]::before {
+  background-color: #d8dee9;
+}
+.callout[data-callout="quote"] .callout-title,
+.callout[data-callout="cite"] .callout-title {
+  color: #d8dee9;
+}
+
+/* QUESTION / FAQ / HELP / 问题 */
+.callout[data-callout="question"],
+.callout[data-callout="faq"],
+.callout[data-callout="help"] {
+  background-color: rgba(129, 161, 193, 0.08);
+}
+.callout[data-callout="question"]::before,
+.callout[data-callout="faq"]::before,
+.callout[data-callout="help"]::before {
+  background-color: #81a1c1;
+}
+.callout[data-callout="question"] .callout-title,
+.callout[data-callout="faq"] .callout-title,
+.callout[data-callout="help"] .callout-title {
+  color: #81a1c1;
+}
+
+/* --------------------------------------------------------------------------
+   折叠 Callout 优化
+   -------------------------------------------------------------------------- */
+.callout.is-collapsible > .callout-title {
+  cursor: pointer;
+}
+
+.callout.is-collapsed {
+  padding-bottom: 0.8em;
+}
+
+/* --------------------------------------------------------------------------
+   嵌套 Callout 间距
+   -------------------------------------------------------------------------- */
+.callout .callout {
+  margin: 0.5em 0;
+}

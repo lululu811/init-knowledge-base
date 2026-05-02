@@ -1,0 +1,19 @@
+{
+  "accentColor": "#5e81ac",
+  "cssTheme": "",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "enabledCssSnippets": [
+    "wiki-reading",
+    "wiki-callouts",
+    "wiki-components"
+  ],
+  "theme": "obsidian",
+  "translucency": false,
+  "interfaceFontFamily": "",
+  "textFontFamily": "",
+  "monospaceFontFamily": "",
+  "showViewHeader": true,
+  "nativeMenus": false,
+  "showRibbon": true
+}

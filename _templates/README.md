@@ -1,0 +1,38 @@
+# {vault_name}
+
+本项目是一个基于 [Karpathy LLM Wiki 理念](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 构建的 Obsidian 知识库。
+
+## 核心理念
+
+将碎片化的信息编译成**结构化、高度相互链接**的知识网络，便于 AI 辅助学习和研究。
+
+## 目录结构
+
+```
+📁 知识库项目
+├── 🖼️ assets/              ← 媒体资源层：图片、PDF、附件
+├── 📥 raw/                 ← 原始资料收件箱（只读）
+│   ├── 01-articles/        ← 网页剪藏、文章
+│   ├── 02-papers/          ← 论文、研报、PDF
+│   ├── 03-transcripts/     ← 视频/播客转录
+│   ├── 04-meeting_notes/   ← 会议/课堂笔记
+│   └── 09-archive/         ← 已归档区
+├── 🧠 wiki/                ← 知识编译输出层
+│   ├── index.md            ← 全局内容字典
+│   ├── log.md              ← 操作日志
+│   ├── concepts/           ← 概念、框架、方法论
+│   ├── entities/           ← 人物、公司、工具
+│   ├── sources/            ← 原始资料摘要
+│   └── syntheses/          ← 综合分析报告
+└── .claude/skills/         ← Agent Skills
+```
+
+## 使用方式
+
+在 Obsidian 中打开本 vault，使用 Claude Code 执行操作。
+
+### 常用命令
+
+- `/query <问题>` — 在知识库中搜索相关内容
+- `/ingest` — 将新的原始资料编译到知识库
+- `/lint` — 检查知识库健康度（死链、孤儿页面）
