@@ -1,6 +1,7 @@
 ---
 title: "<% tp.file.title %>"
 type: concept
+complexity: ⭐⭐⭐☆☆
 aliases: []
 tags: []
 sources: []

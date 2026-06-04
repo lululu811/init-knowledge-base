@@ -1,9 +1,10 @@
 ---
 title: "<% tp.file.title %>"
 type: source
+source_type: ""
 aliases: []
 tags: []
-sources: [raw/xx/xx.md]
+sources: []
 created: "<% tp.date.now("YYYY-MM-DD") %>"
 last_updated: "<% tp.date.now("YYYY-MM-DD") %>"
 status: "draft"

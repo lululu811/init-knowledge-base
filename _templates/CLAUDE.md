@@ -33,9 +33,19 @@
 
 4. **强制双向链接**：
    每一个 wiki 页面必须包含 `## 关联连接` 区域，使用 Obsidian 双链 `[[页面名称]]` 链接到其他相关概念。绝不能产生孤岛页面。
+   
+   **高级链接语法**（推荐使用）：
+   - `[[页面名称#标题]]` — 链接到目标页面的特定标题
+   - `[[页面名称#^块ID]]` — 链接到目标页面的特定段落（需先在目标段落末尾定义 `^块ID`）
+   - `[[页面名称|显示文本]]` — 使用自定义显示文本
+   
+   **嵌入（Embeds）**：使用 `![[页面名称]]` 或 `![[图片.png|300]]` 在页面中嵌入其他内容。
 
 5. **矛盾处理原则**：
    如果新摄入的知识与旧知识冲突，不要静默覆盖。在页面中新建 `## 知识冲突` 区块，将两种说法都保留并做对比。
+
+6. **注释（Comments）**：
+   使用 `%%隐藏内容%%` 在源代码中记录 AI 处理标记或内部批注，阅读视图中不可见。适用于记录待办、处理逻辑等不影响阅读的内容。
 
 # 工作流指令说明 (Workflows / Skills)
 
@@ -45,12 +55,22 @@
 
 # 页面 Frontmatter (YAML) 规范
 所有生成的 wiki 页面必须包含以下 YAML 头部：
+
 ```yaml
 ---
 title: "页面标题"
-type: concept | entity | source | synthesis
+type: concept | entity | source | synthesis | moc
+aliases: []
 tags: [知识标签]
 sources: [关联的raw文件相对路径]
+created: YYYY-MM-DD
 last_updated: YYYY-MM-DD
+status: draft | finished | archived
 ---
 ```
+
+**类型扩展字段**（根据页面类型可选补充）：
+- `entity` → `entity_type`: 人物 / 公司 / 产品 / 工具 / 机构 / 地点 / 其他
+- `concept` → `complexity`: 复杂度评分，如 ⭐⭐⭐☆☆
+- `source` → `source_type`: 文章 / 论文 / 书籍 / 视频 / 播客 / 会议 / 其他；`credibility`: ⭐⭐⭐☆☆
+- `synthesis` → `confidence`: 置信度评分，如 ⭐⭐⭐☆☆

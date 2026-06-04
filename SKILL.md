@@ -45,12 +45,18 @@ _templates/
 │   ├── index.md
 │   ├── log.md
 │   └── mocs/
-│       └── README.md
+│       ├── README.md
+│       ├── MOC-技术.md
+│       ├── MOC-商业.md
+│       ├── MOC-人物.md
+│       └── MOC-待整理.md
 └── .claude/
     └── skills/
         ├── ingest/SKILL.md
         ├── query/SKILL.md
-        └── lint/SKILL.md
+        ├── lint/SKILL.md
+        ├── obsidian-markdown/SKILL.md
+        └── json-canvas/SKILL.md
 ```
 
 ## 生成流水线
@@ -118,6 +124,10 @@ _templates/
 - `wiki/index.md` → 原样复制（Dataview 动态仪表盘）
 - `wiki/log.md` → 原样复制
 - `wiki/mocs/README.md` → 原样复制
+- `wiki/mocs/MOC-技术.md` → 原样复制
+- `wiki/mocs/MOC-商业.md` → 原样复制
+- `wiki/mocs/MOC-人物.md` → 原样复制
+- `wiki/mocs/MOC-待整理.md` → 原样复制
 
 ### 步骤 4：安装标准化模板
 
@@ -128,7 +138,7 @@ _templates/
 - `source.md` → `templates/source.md`
 - `synthesis.md` → `templates/synthesis.md`
 
-> 这些模板供 Templater 插件使用，ingest 创建页面时可引用。用户需在 Obsidian Settings → Core Plugins → Templates 中设置模板文件夹为 `templates/`。
+> 这些模板使用 Templater 语法（如 `<% tp.file.title %>`），供 Templater 插件解析。安装 Templater 后，前往 **Settings → Templater**，将 `Template folder location` 设为 `templates/`。
 
 ### 步骤 5：安装 Obsidian 配置
 
@@ -147,6 +157,8 @@ _templates/
 - `ingest/SKILL.md` → `.claude/skills/ingest/SKILL.md`
 - `query/SKILL.md` → `.claude/skills/query/SKILL.md`
 - `lint/SKILL.md` → `.claude/skills/lint/SKILL.md`
+- `obsidian-markdown/SKILL.md` → `.claude/skills/obsidian-markdown/SKILL.md`
+- `json-canvas/SKILL.md` → `.claude/skills/json-canvas/SKILL.md`
 
 ### 步骤 7：输出完成报告
 
@@ -158,7 +170,7 @@ _templates/
 - 📄 核心文件：README.md, CLAUDE.md, wiki/index.md, wiki/log.md
 - 📝 标准模板：entity / concept / source / synthesis（共 4 个）
 - ⚙️ Obsidian 配置：统一插件清单 + 3 个 CSS 阅读样式
-- 🤖 Agent Skills: ingest（增量）, query, lint（增强）
+- 🤖 Agent Skills: ingest（增量）, query, lint, obsidian-markdown（语法规范）, json-canvas（可视化）
 
 ### 首次使用 Obsidian
 1. 在 Obsidian 中打开此文件夹作为 Vault

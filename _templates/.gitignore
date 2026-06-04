@@ -12,6 +12,9 @@
 !.obsidian/community-plugins.json
 !.obsidian/snippets/
 
+# Agent 运行时状态（增量处理）
+.claude/ingest-state.json
+
 # OS
 .DS_Store
 Thumbs.db

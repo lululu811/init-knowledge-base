@@ -23,7 +23,8 @@ user-invocable: true
 ## 检索与综合流水线
 
 ### 步骤 1：查阅全局索引
-**永远的第一步**：读取 `wiki/index.md`，定位与问题相关的 Entities、Concepts、Sources、Syntheses。
+**首选路径**：读取 `wiki/index.md`，定位与问题相关的 Entities、Concepts、Sources、Syntheses。
+**备选路径**：如果 index.md 无法定位或内容不足，直接扫描 `wiki/` 目录下的 `.md` 文件列表，通过文件名和 frontmatter 中的 `tags`、`type` 字段筛选相关页面。
 
 ### 步骤 2：深度阅读目标文件
 选取步骤 1 中找到的最相关页面，使用读取工具获取完整内容。

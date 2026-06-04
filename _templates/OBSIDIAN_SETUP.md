@@ -87,6 +87,80 @@
 - **Things** — 清爽语义化配色
 - **AnuPpuccin** — 柔和护眼
 
+## Obsidian Markdown 高级语法
+
+本知识库的 Agent 在创建内容时遵循统一的 Markdown 规范，支持以下 Obsidian 特有语法：
+
+### 内部链接（Wikilinks）
+
+```markdown
+[[页面名称]]                    → 基础双链
+[[页面名称|显示文本]]           → 自定义显示文本
+[[页面名称#标题]]               → 链接到特定标题
+[[页面名称#^块ID]]              → 链接到特定段落
+```
+
+**块 ID**：在任意段落末尾追加 `^块ID` 即可创建精确链接锚点：
+```markdown
+这是一个可被精确引用的段落。 ^my-block-id
+```
+
+### 嵌入（Embeds）
+
+```markdown
+![[图片.png|300]]              → 嵌入图片并限制宽度
+![[文档.pdf#page=3]]           → 嵌入 PDF 第 3 页
+![[页面名称#^块ID]]            → 嵌入其他页面的特定段落
+```
+
+### Callouts
+
+```markdown
+> [!note]
+> 笔记型 callout
+
+> [!warning] 自定义标题
+> 带自定义标题的警告
+
+> [!faq]- 默认折叠
+> 可折叠的 callout（- 折叠，+ 展开）
+```
+
+### 注释（Comments）
+
+```markdown
+这是可见文本 %%这是隐藏的 AI 批注%%。
+
+%%
+整段隐藏内容。
+可用于记录处理逻辑，不影响阅读视图。
+%%
+```
+
+---
+
+## Canvas 可视化
+
+本知识库包含 `json-canvas` Agent Skill，可将 `wiki/` 中的知识网络自动生成为 `.canvas` 可视化文件。
+
+### 使用方法
+
+在 Kimi Code CLI 中执行：
+```
+/canvas
+```
+
+Agent 会扫描 `wiki/` 中的页面和双链关系，生成一个可视化画布文件（如 `wiki/knowledge-graph.canvas`），你可以在 Obsidian 的 Canvas 视图中打开查看和编辑。
+
+### Canvas 中的节点类型
+
+- **文本节点** — 概念定义、关键洞察
+- **文件节点** — 链接到具体的 wiki 页面（可点击跳转）
+- **链接节点** — 外部参考 URL
+- **分组节点** — 按主题组织相关概念
+
+---
+
 ## 首次使用步骤
 
 1. 在 Obsidian 中打开本文件夹作为 Vault
@@ -96,3 +170,4 @@
 5. 配置 Templater 的模板文件夹为 `templates/`
 6. 将原始资料放入 raw/ 目录
 7. 执行 `/ingest` 开始编译知识
+8. 执行 `/canvas` 生成知识网络可视化图谱

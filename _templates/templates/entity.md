@@ -1,6 +1,7 @@
 ---
 title: "<% tp.file.title %>"
 type: entity
+entity_type: ""
 aliases: []
 tags: []
 sources: []

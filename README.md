@@ -13,7 +13,7 @@
 - ⚙️ **统一 Obsidian 配置**：预置核心插件清单、社区插件推荐、编辑器设置
 - 🎨 **3 个 CSS 阅读样式**：`wiki-reading.css`、`wiki-callouts.css`、`wiki-components.css`
 - 📊 **Dataview 动态仪表盘**：`wiki/index.md` 自动聚合概念库、实体库、待处理清单
-- 🤖 **3 个 Agent Skills**：`ingest`（增量编译）、`query`（智能查询）、`lint`（健康检查）
+- 🤖 **5 个 Agent Skills**：`ingest`（增量编译）、`query`（智能查询）、`lint`（健康检查）、`obsidian-markdown`（语法规范）、`json-canvas`（知识可视化）
 
 ## 快速开始
 
@@ -70,7 +70,9 @@ Skill 将自动生成完整的项目结构，你可以直接在 Obsidian 中打�
     └── skills/               # Agent Skills
         ├── ingest/           # 将 raw/ 资料编译到 wiki/
         ├── query/            # 在知识库中搜索与回答
-        └── lint/             # 检查死链、孤儿页面、逻辑冲突
+        ├── lint/             # 检查死链、孤儿页面、逻辑冲突
+        ├── obsidian-markdown/ # Obsidian Markdown 语法规范
+        └── json-canvas/      # Canvas 可视化与知识图谱
 ```
 
 ## 核心设计原则
@@ -87,6 +89,8 @@ Skill 将自动生成完整的项目结构，你可以直接在 Obsidian 中打�
 | **ingest** | `/ingest <路径>` | 读取 raw/ 文件，提炼到 wiki/，自动更新 index 和 log |
 | **query** | `/query <问题>` | 通过 wiki/index.md 查找相关文件，深度阅读后用 `[[wikilink]]` 标注来源回答 |
 | **lint** | `/lint` | 全局扫描 wiki/，找出孤儿页面、死链和逻辑冲突 |
+| **obsidian-markdown** | 隐式调用 | 所有写入操作遵循的 Obsidian Markdown 语法规范 |
+| **json-canvas** | `/canvas` | 将 wiki/ 中的知识网络自动生成为 `.canvas` 可视化图谱 |
 
 ## 文件说明
 
