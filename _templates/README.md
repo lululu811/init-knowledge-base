@@ -25,9 +25,10 @@
 │   ├── sources/            ← 原始资料摘要
 │   └── syntheses/          ← 综合分析报告
 └── .claude/skills/         ← Agent Skills
-    ├── ingest/             # 将 raw/ 资料编译到 wiki/
+    ├── ingest/             # 将 raw/ 资料编译到 wiki/（支持讨论确认）
     ├── query/              # 在知识库中搜索与回答
-    ├── lint/               # 检查死链、孤儿页面、逻辑冲突
+    ├── lint/               # 检查死链、孤儿页面、概念空缺、逻辑冲突
+    ├── refresh/            # 联网搜索更新陈旧知识，确保时效性
     ├── obsidian-markdown/  # Obsidian Markdown 语法规范
     └── json-canvas/        # Canvas 可视化与知识图谱
 ```
@@ -38,7 +39,8 @@
 
 ### 常用命令
 
+- `/ingest <路径或URL>` — 将原始资料或网页编译到知识库（支持讨论确认）
 - `/query <问题>` — 在知识库中搜索相关内容
-- `/ingest` — 将新的原始资料编译到知识库
-- `/lint` — 检查知识库健康度（死链、孤儿页面）
+- `/lint` — 检查知识库健康度（死链、孤儿页面、概念空缺）
+- `/refresh` — 联网搜索更新陈旧知识，确保时效性
 - `/canvas` — 将知识网络生成为可视化的 Canvas 图谱

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki Mermaid 图表预览</title>
+  <style>
+    :root {
+      --bg: #1a1b26;
+      --panel: #24283b;
+      --border: rgba(255,255,255,0.06);
+      --text: #c0caf5;
+      --text-dim: #565f89;
+      --accent: #7aa2f7;
+      --green: #9ece6a;
+      --orange: #e0af68;
+      --red: #f7768e;
+      --purple: #bb9af7;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.7;
+    }
+    #header {
+      background: rgba(36, 40, 59, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    #header h1 {
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    #header .subtitle {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    #nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    #nav a {
+      background: rgba(122, 162, 247, 0.1);
+      border: 1px solid rgba(122, 162, 247, 0.2);
+      color: var(--accent);
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    #nav a:hover {
+      background: rgba(122, 162, 247, 0.2);
+      border-color: rgba(122, 162, 247, 0.4);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    .section h2 {
+      font-size: 16px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .section .desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .mermaid-box {
+      background: #1a1b26;
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      overflow-x: auto;
+    }
+    .mermaid {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif !important;
+    }
+    .file-tag {
+      display: inline-block;
+      background: rgba(158, 206, 106, 0.12);
+      color: var(--green);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      font-weight: 500;
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#5e81ac',
+        primaryTextColor: '#e5e9f0',
+        primaryBorderColor: '#5e81ac',
+        lineColor: '#81a1c1',
+        secondaryColor: '#3b4252',
+        tertiaryColor: '#2e3440',
+        fontFamily: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+        nodeBorder: '#5e81ac',
+        clusterBkg: '#2e3440',
+        clusterBorder: '#4c566a',
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="header">
+    <h1>🧠 Wiki Mermaid 图表预览</h1>
+    <div class="subtitle">Obsidian 原生渲染效果模拟 · 共 8 个图表 · 来自 7 个模板文件</div>
+    <div id="nav">
+      <a href="#sec1">知识管线</a>
+      <a href="#sec2">架构思维导图</a>
+      <a href="#sec3">编译流程</a>
+      <a href="#sec4">技能交互</a>
+      <a href="#sec5">权限模型</a>
+      <a href="#sec6">技术MOC</a>
+      <a href="#sec7">商业MOC</a>
+      <a href="#sec8">首次使用</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="section" id="sec1">
+      <h2>📊 知识管线 <span class="file-tag">wiki/index.md</span></h2>
+      <div class="desc">知识从摄入到产出的完整管线，展示在首页仪表盘顶部</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+flowchart LR
+    RAW["📥 raw/"] -->|"/ingest"| IG["🤖 编译"]
+    URL["🌐 URL"] -->|"/ingest url"| IG
+    IG --> WIKI["🧠 wiki/"]
+    WIKI -->|"/query"| ANS["💬 回答"]
+    WIKI -->|"/lint"| RPT["📋 健康报告"]
+    WIKI -->|"/refresh"| UPD["🔄 联网更新"]
+    WIKI -->|"/canvas"|GRP["🎨 图谱"]
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec2">
+      <h2>🧠 架构总览思维导图 <span class="file-tag">Mindmap-知识库全景.md</span></h2>
+      <div class="desc">整个知识库的层级结构一览</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+mindmap
+  root((LLM Wiki))
+    原始资料 raw
+      文章 01-articles
+      论文 02-papers
+      转录 03-transcripts
+      笔记 04-meeting_notes
+      归档 09-archive
+    知识编译 wiki
+      概念 concepts
+        框架
+        方法论
+        理论
+      实体 entities
+        人物
+        公司
+        工具
+        产品
+      来源摘要 sources
+      综合分析 syntheses
+      主题地图 mocs
+    Agent技能
+      ingest 摄入
+      query 查询
+      lint 健康检查
+      refresh 联网刷新
+      canvas 可视化
+    配置体系
+      Obsidian配置
+      CSS样式
+      模板系统
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec3">
+      <h2>🔄 知识编译流程 <span class="file-tag">Mindmap-知识库全景.md</span></h2>
+      <div class="desc">从 raw/ 到 wiki/ 的完整编译流程，含维护环节</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+flowchart LR
+    subgraph Raw["📥 raw/ 不可变层"]
+        R1[文章]
+        R2[论文]
+        R3[转录]
+        R4[URL网页]
+    end
+    subgraph Ingest["🤖 ingest"]
+        I1[提取实体概念]
+        I2[讨论确认]
+        I3[创建wiki页面]
+    end
+    subgraph Wiki["🧠 wiki/ 编译层"]
+        W1[concepts/]
+        W2[entities/]
+        W3[sources/]
+        W4[syntheses/]
+    end
+    subgraph Maintain["🔧 维护"]
+        M1[lint 健康]
+        M2[refresh 更新]
+        M3[canvas 图谱]
+    end
+    R1 & R2 & R3 --> I1
+    R4 -->|自动抓取| I1
+    I1 --> I2 --> I3
+    I3 --> W1 & W2 & W3 & W4
+    W1 & W2 & W3 & W4 --> M1 & M2 & M3
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec4">
+      <h2>🤖 Agent 技能交互 <span class="file-tag">Mindmap-知识库全景.md</span></h2>
+      <div class="desc">6 个 Agent Skill 的输入输出和依赖关系</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+flowchart TD
+    User([用户])
+    User -->|"/ingest"| IG[ingest]
+    User -->|"/query"| QY[query]
+    User -->|"/lint"| LT[lint]
+    User -->|"/refresh"| RF[refresh]
+    User -->|"/canvas"| CV[canvas]
+    IG -->|"写入"| Wiki[(wiki/)]
+    QY -->|"读取"| Wiki
+    LT -->|"扫描"| Wiki
+    RF -->|"更新"| Wiki
+    CV -->|"读取"| Wiki
+    IG -.->|"规范"| OM[obsidian-markdown]
+    QY -.-> OM
+    LT -.-> OM
+    RF -.-> OM
+    IG --> IS[(state.json)]
+    RF --> RS[(state.json)]
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec5">
+      <h2>🔒 目录权限模型 <span class="file-tag">Mindmap-知识库全景.md + CLAUDE.md</span></h2>
+      <div class="desc">三层分离架构：不可变层 → 媒体层 → 编译层</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+flowchart TB
+    subgraph Immutable["⛔ 不可变层"]
+        RAW["raw/ 原始资料 只读"]
+        ARC["raw/09-archive/ 禁止读取"]
+    end
+    subgraph Media["🖼️ 媒体层"]
+        ASSETS["assets/ 图片PDF 语法: ![[file]]"]
+    end
+    subgraph Workspace["✏️ 编译层 Agent工作区"]
+        WIKI["wiki/ 可创建更新"]
+        TPL["templates/ 模板只读"]
+    end
+    subgraph Config["⚙️ 配置层"]
+        OBS[".obsidian/ 配置"]
+        CLD[".claude/ Skills+状态"]
+    end
+    RAW -->|"ingest 编译"| WIKI
+    WIKI -->|"嵌入"| ASSETS
+    TPL -.->|"模板引用"| WIKI
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec6">
+      <h2>💻 技术领域图谱 <span class="file-tag">MOC-技术.md</span></h2>
+      <div class="desc">技术领域知识分类思维导图</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+mindmap
+  root((技术))
+    AI/机器学习
+      深度学习
+      NLP
+      计算机视觉
+      强化学习
+    前端
+      框架
+      CSS
+      构建工具
+    后端
+      语言
+      数据库
+      中间件
+    基础设施
+      云计算
+      容器化
+      CI/CD
+    开发工具
+      编辑器
+      版本控制
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec7">
+      <h2>💼 商业领域图谱 <span class="file-tag">MOC-商业.md</span></h2>
+      <div class="desc">商业领域知识分类思维导图</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+mindmap
+  root((商业))
+    商业模式
+      SaaS
+      电商
+      广告
+      订阅制
+    市场
+      市场分析
+      竞品研究
+      用户增长
+    投资
+      风险投资
+      估值方法
+      财务分析
+    产品
+      产品策略
+      增长黑客
+    组织管理
+      团队建设
+      OKR/KPI
+</pre>
+      </div>
+    </div>
+
+    <div class="section" id="sec8">
+      <h2>🚀 首次使用流程 <span class="file-tag">OBSIDIAN_SETUP.md</span></h2>
+      <div class="desc">新用户从打开 Vault 到生成图谱的 10 步流程</div>
+      <div class="mermaid-box">
+<pre class="mermaid">
+flowchart TD
+    A["1. Obsidian 打开 Vault"] --> B["2. 关闭 Restricted Mode"]
+    B --> C["3. 安装 Dataview + Templater"]
+    C --> D["4. 确认 CSS Snippets"]
+    D --> E["5. Templater 设置模板路径"]
+    E --> F["6. 图谱颜色预设生效"]
+    F --> G["7. 放入资料或 /ingest url"]
+    G --> H["8. /ingest 编译知识"]
+    H --> I["9. /refresh 联网更新"]
+    I --> J["10. /canvas 生成图谱"]
+</pre>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

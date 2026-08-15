@@ -10,10 +10,13 @@
 !.obsidian/appearance.json
 !.obsidian/core-plugins.json
 !.obsidian/community-plugins.json
+!.obsidian/templates.json
+!.obsidian/graph.json
 !.obsidian/snippets/
 
 # Agent 运行时状态（增量处理）
 .claude/ingest-state.json
+.claude/refresh-state.json
 
 # OS
 .DS_Store

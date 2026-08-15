@@ -27,11 +27,21 @@ _templates/
 ├── CLAUDE.md
 ├── OBSIDIAN_SETUP.md
 ├── .gitignore
+├── assets/
+│   └── .gitkeep
+├── raw/
+│   ├── 01-articles/.gitkeep
+│   ├── 02-papers/.gitkeep
+│   ├── 03-transcripts/.gitkeep
+│   ├── 04-meeting_notes/.gitkeep
+│   └── 09-archive/.gitkeep
 ├── .obsidian/
 │   ├── app.json
 │   ├── appearance.json
 │   ├── core-plugins.json
 │   ├── community-plugins.json
+│   ├── templates.json
+│   ├── graph.json
 │   └── snippets/
 │       ├── wiki-reading.css
 │       ├── wiki-callouts.css
@@ -46,6 +56,7 @@ _templates/
 │   ├── log.md
 │   └── mocs/
 │       ├── README.md
+│       ├── Mindmap-知识库全景.md
 │       ├── MOC-技术.md
 │       ├── MOC-商业.md
 │       ├── MOC-人物.md
@@ -55,6 +66,7 @@ _templates/
         ├── ingest/SKILL.md
         ├── query/SKILL.md
         ├── lint/SKILL.md
+        ├── refresh/SKILL.md
         ├── obsidian-markdown/SKILL.md
         └── json-canvas/SKILL.md
 ```
@@ -68,7 +80,7 @@ _templates/
 
 ### 步骤 2：创建目录结构
 
-在项目根目录下创建以下结构：
+在项目根目录下创建以下结构（空目录内放置 `.gitkeep` 占位文件以确保 Git 追踪）：
 
 ```
 {project_root}/
@@ -76,13 +88,13 @@ _templates/
 ├── CLAUDE.md
 ├── OBSIDIAN_SETUP.md
 ├── .gitignore
-├── assets/
+├── assets/.gitkeep
 ├── raw/
-│   ├── 01-articles/
-│   ├── 02-papers/
-│   ├── 03-transcripts/
-│   ├── 04-meeting_notes/
-│   └── 09-archive/
+│   ├── 01-articles/.gitkeep
+│   ├── 02-papers/.gitkeep
+│   ├── 03-transcripts/.gitkeep
+│   ├── 04-meeting_notes/.gitkeep
+│   └── 09-archive/.gitkeep
 ├── templates/
 │   ├── entity.md
 │   ├── concept.md
@@ -102,6 +114,8 @@ _templates/
 │   ├── appearance.json
 │   ├── core-plugins.json
 │   ├── community-plugins.json
+│   ├── templates.json
+│   ├── graph.json
 │   └── snippets/
 │       ├── wiki-reading.css
 │       ├── wiki-callouts.css
@@ -110,7 +124,10 @@ _templates/
     └── skills/
         ├── ingest/
         ├── query/
-        └── lint/
+        ├── lint/
+        ├── refresh/
+        ├── obsidian-markdown/  (隐式调用)
+        └── json-canvas/
 ```
 
 ### 步骤 3：复制模板文件
@@ -121,9 +138,12 @@ _templates/
 - `CLAUDE.md` → 原样复制
 - `OBSIDIAN_SETUP.md` → 原样复制
 - `.gitignore` → 原样复制
+- `raw/**/*.gitkeep` → 原样复制（确保空目录被 Git 追踪）
+- `assets/.gitkeep` → 原样复制
 - `wiki/index.md` → 原样复制（Dataview 动态仪表盘）
 - `wiki/log.md` → 原样复制
 - `wiki/mocs/README.md` → 原样复制
+- `wiki/mocs/Mindmap-知识库全景.md` → 原样复制（Markmap 思维导图）
 - `wiki/mocs/MOC-技术.md` → 原样复制
 - `wiki/mocs/MOC-商业.md` → 原样复制
 - `wiki/mocs/MOC-人物.md` → 原样复制
@@ -144,10 +164,12 @@ _templates/
 
 从 `_templates/.obsidian/` 复制：
 
-- `app.json` → `.obsidian/app.json`（编辑器设置）
+- `app.json` → `.obsidian/app.json`（编辑器设置，默认阅读模式）
 - `appearance.json` → `.obsidian/appearance.json`（外观+CSS片段启用）
 - `core-plugins.json` → `.obsidian/core-plugins.json`（核心插件列表）
 - `community-plugins.json` → `.obsidian/community-plugins.json`（推荐社区插件列表）
+- `templates.json` → `.obsidian/templates.json`（核心 Templates 插件模板文件夹配置）
+- `graph.json` → `.obsidian/graph.json`（图谱视图颜色分组配置）
 - `snippets/*.css` → `.obsidian/snippets/*.css`（阅读优化样式）
 
 ### 步骤 6：安装 Agent Skills
@@ -157,6 +179,7 @@ _templates/
 - `ingest/SKILL.md` → `.claude/skills/ingest/SKILL.md`
 - `query/SKILL.md` → `.claude/skills/query/SKILL.md`
 - `lint/SKILL.md` → `.claude/skills/lint/SKILL.md`
+- `refresh/SKILL.md` → `.claude/skills/refresh/SKILL.md`
 - `obsidian-markdown/SKILL.md` → `.claude/skills/obsidian-markdown/SKILL.md`
 - `json-canvas/SKILL.md` → `.claude/skills/json-canvas/SKILL.md`
 
@@ -166,19 +189,22 @@ _templates/
 ## ✅ 知识库初始化完成 — {vault_name}
 
 ### 已创建
-- 📁 目录结构：raw/, wiki/, assets/, templates/, .claude/skills/
+- 📁 目录结构：raw/, wiki/, assets/, templates/, .claude/skills/（含 .gitkeep 占位）
 - 📄 核心文件：README.md, CLAUDE.md, wiki/index.md, wiki/log.md
 - 📝 标准模板：entity / concept / source / synthesis（共 4 个）
-- ⚙️ Obsidian 配置：统一插件清单 + 3 个 CSS 阅读样式
-- 🤖 Agent Skills: ingest（增量）, query, lint, obsidian-markdown（语法规范）, json-canvas（可视化）
+- ⚙️ Obsidian 配置：统一插件清单 + 模板/图谱预设 + 3 个 CSS 阅读样式
+- 🤖 Agent Skills: ingest（增量+讨论+URL摄入）, query, lint（+概念空缺）, refresh（联网更新）, obsidian-markdown（语法规范）, json-canvas（可视化）
 
 ### 首次使用 Obsidian
 1. 在 Obsidian 中打开此文件夹作为 Vault
 2. 参考 `OBSIDIAN_SETUP.md` 安装推荐社区插件
 3. 确认 **Settings → Appearance → CSS Snippets** 中三个片段已启用
-4. 设置 **Core Plugins → Templates** 的模板文件夹为 `templates/`
-5. 将原始资料放入 raw/ 目录
-6. 执行 `/ingest` 开始编译知识
+4. 模板文件夹已通过 `templates.json` 自动配置为 `templates/`
+5. 图谱视图颜色分组已通过 `graph.json` 预设
+6. 将原始资料放入 raw/ 目录，或直接执行 `/ingest <url>` 抓取网页
+7. 执行 `/ingest` 开始编译知识
+8. 定期执行 `/refresh` 联网更新陈旧内容
+9. 执行 `/lint` 检查知识库健康度
 ```
 
 ## 注意事项
@@ -188,3 +214,4 @@ _templates/
 - Skill 文件保持通用性，不绑定特定主题领域
 - `.obsidian/` 中的 `workspace*.json` 和插件二进制文件已加入 `.gitignore`，但配置文件和 CSS 片段会被版本控制保留
 - **增量 ingest**：通过 `.claude/ingest-state.json` 追踪处理状态，避免重复编译
+- **联网 refresh**：通过 `.claude/refresh-state.json` 追踪刷新状态，支持按领域设置不同刷新周期

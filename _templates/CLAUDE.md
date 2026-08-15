@@ -5,6 +5,26 @@
 # 核心目录与权限边界 (Immutability & Architecture)
 你必须严格遵守以下文件操作权限，这是不可逾越的底线：
 
+```mermaid
+flowchart TB
+    subgraph Immutable["⛔ 不可变层 · 只读"]
+        RAW["raw/ · 原始素材"]
+    end
+    subgraph Media["🖼️ 媒体层 · 引用"]
+        AST["assets/ · 图片/PDF"]
+    end
+    subgraph Workspace["✏️ 编译层 · Agent 工作区"]
+        WIKI["wiki/ · 概念/实体/来源/综合"]
+    end
+
+    RAW ==>|"ingest 编译"| WIKI
+    WIKI -.->|"![[嵌入]]"| AST
+
+    style Immutable fill:#bf616a,stroke:#bf616a,color:#fff
+    style Media fill:#d08770,stroke:#d08770,color:#fff
+    style Workspace fill:#a3be8c,stroke:#a3be8c,color:#fff
+```
+
 - `/raw/` (不可变层 - Immutable)：
   - **绝对只读**。这里存放原始素材、网页剪藏和文案。
   - **禁止修改或删除此目录下的任何文件**。它是事实的唯一真相来源。
@@ -24,7 +44,7 @@
 
 2. **`wiki/log.md` (操作日志)**：
    只能追加写入（Append-only）。每次操作后记录：`## [YYYY-MM-DD] <动作> | <操作简述>`。
-   操作类型： ingest, query, lint, sync
+   操作类型： ingest, query, lint, canvas, refresh
 
 3. **内容分类**：
    - `/wiki/concepts/`：概念、框架、方法论。
@@ -49,9 +69,10 @@
 
 # 工作流指令说明 (Workflows / Skills)
 
-- `/ingest <路径>`：读取指定的 `raw/` 文件，提炼到 `wiki/`。必须更新 index 和 log。
+- `/ingest <路径或URL>`：读取指定的 `raw/` 文件或抓取 URL 网页内容，提炼到 `wiki/`。必须更新 index 和 log。
 - `/query <问题>`：通过 `wiki/index.md` 查找相关文件，深度阅读后回答，用 `[[wikilink]]` 标注来源。
-- `/lint`：全局扫描 `wiki/`，找出孤儿页面、死链和逻辑冲突。
+- `/lint`：全局扫描 `wiki/`，找出孤儿页面、死链、概念空缺和逻辑冲突。
+- `/refresh`：联网搜索最新信息，验证和更新 wiki/ 中的陈旧内容，标记冲突。
 
 # 页面 Frontmatter (YAML) 规范
 所有生成的 wiki 页面必须包含以下 YAML 头部：
@@ -65,9 +86,12 @@ tags: [知识标签]
 sources: [关联的raw文件相对路径]
 created: YYYY-MM-DD
 last_updated: YYYY-MM-DD
+last_refreshed: YYYY-MM-DD
 status: draft | finished | archived
 ---
 ```
+
+> `last_refreshed` 记录最后一次通过 `/refresh` 联网验证的日期。无此字段表示从未联网刷新过。
 
 **类型扩展字段**（根据页面类型可选补充）：
 - `entity` → `entity_type`: 人物 / 公司 / 产品 / 工具 / 机构 / 地点 / 其他

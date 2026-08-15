@@ -205,7 +205,90 @@ tags:
 
 ---
 
-## 8. 完整示例
+## 8. Mermaid 图表
+
+Obsidian 原生支持 Mermaid 图表，在代码块中使用 `mermaid` 语言标记即可渲染。无需安装插件。
+
+### 流程图（flowchart）
+
+适合展示工作流、数据流、决策过程：
+
+```markdown
+```mermaid
+flowchart LR
+    A[原始资料] --> B[ingest 编译]
+    B --> C[wiki 知识库]
+    C --> D[query 查询]
+```
+```
+
+### 思维导图（mindmap）
+
+适合展示层级关系、知识体系：
+
+```markdown
+```mermaid
+mindmap
+  root((主题))
+    分支 A
+      子节点 A1
+      子节点 A2
+    分支 B
+      子节点 B1
+```
+```
+
+### 时间线（timeline）
+
+适合展示演进历史、发展脉络：
+
+```markdown
+```mermaid
+timeline
+    title 发展历程
+    section 起源
+        2017 : 概念提出
+    section 发展
+        2020 : 重大突破
+    section 现状
+        2024 : 当前状态
+```
+```
+
+### 时序图（sequenceDiagram）
+
+适合展示交互流程、系统调用：
+
+```markdown
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant A as Agent
+    U->>A: /ingest path
+    A->>A: 编译知识
+    A-->>U: 完成报告
+```
+```
+
+### 使用建议
+
+| 场景 | 推荐图表类型 |
+|------|-------------|
+| 知识体系/领域分类 | `mindmap` |
+| 工作流/数据流 | `flowchart LR` 或 `flowchart TD` |
+| 概念演进/历史 | `timeline` |
+| 交互流程 | `sequenceDiagram` |
+| 状态转换 | `stateDiagram-v2` |
+| 类关系 | `classDiagram` |
+
+> Agent 在创建 wiki 页面时，应在以下场景主动使用 Mermaid 图表：
+> - 概念页面的「演进脉络」→ `timeline`
+> - 综合分析页面的「证据关系」→ `flowchart`
+> - MOC 页面的领域分类 → `mindmap`
+
+---
+
+## 9. 完整示例
 
 ```markdown
 ---

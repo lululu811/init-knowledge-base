@@ -1,6 +1,7 @@
 /* ==========================================================================
    Wiki Reading — 知识库阅读优化样式
    基于 Minimal / Things 主题理念，专为长时间阅读设计
+   v2: 增加 RGB 变量、Dataview 样式、打印支持、亮色模式修复
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -9,6 +10,8 @@
 .theme-dark {
   --wiki-accent: #5e81ac;
   --wiki-accent-light: #81a1c1;
+  --wiki-accent-rgb: 94, 129, 172;
+  --wiki-accent-light-rgb: 129, 161, 193;
   --wiki-bg-primary: #1e1e1e;
   --wiki-bg-secondary: #252526;
   --wiki-bg-tertiary: #2d2d30;
@@ -18,11 +21,16 @@
   --wiki-border: #3e3e42;
   --wiki-line-height: 1.75;
   --wiki-paragraph-spacing: 0.8em;
+  --wiki-code-color: #d08770;
+  --wiki-shadow: rgba(0, 0, 0, 0.15);
+  --wiki-shadow-hover: rgba(0, 0, 0, 0.25);
 }
 
 .theme-light {
   --wiki-accent: #4c7899;
   --wiki-accent-light: #6c9abb;
+  --wiki-accent-rgb: 76, 120, 153;
+  --wiki-accent-light-rgb: 108, 154, 187;
   --wiki-bg-primary: #fafafa;
   --wiki-bg-secondary: #f5f5f5;
   --wiki-bg-tertiary: #eeeeee;
@@ -32,13 +40,17 @@
   --wiki-border: #e0e0e0;
   --wiki-line-height: 1.75;
   --wiki-paragraph-spacing: 0.8em;
+  --wiki-code-color: #b85c2e;
+  --wiki-shadow: rgba(0, 0, 0, 0.08);
+  --wiki-shadow-hover: rgba(0, 0, 0, 0.15);
 }
 
 /* --------------------------------------------------------------------------
    2. 全局排版优化
    -------------------------------------------------------------------------- */
 .markdown-source-view.mod-cm6 .cm-content,
-.markdown-preview-view {
+.markdown-preview-view,
+.markdown-rendered {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   line-height: var(--wiki-line-height);
@@ -47,7 +59,8 @@
 
 /* 阅读宽度限制 */
 .markdown-preview-view.is-readable-line-width .markdown-preview-sizer,
-.markdown-source-view.is-readable-line-width .cm-content {
+.markdown-source-view.is-readable-line-width .cm-content,
+.markdown-rendered.is-readable-line-width {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
@@ -62,6 +75,12 @@
 .markdown-preview-view h4,
 .markdown-preview-view h5,
 .markdown-preview-view h6,
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6,
 .HyperMD-header-1,
 .HyperMD-header-2,
 .HyperMD-header-3,
@@ -76,6 +95,7 @@
 }
 
 .markdown-preview-view h1,
+.markdown-rendered h1,
 .HyperMD-header-1 {
   font-size: 2em;
   color: var(--wiki-accent);
@@ -84,6 +104,7 @@
 }
 
 .markdown-preview-view h2,
+.markdown-rendered h2,
 .HyperMD-header-2 {
   font-size: 1.65em;
   color: var(--wiki-text-normal);
@@ -92,12 +113,14 @@
 }
 
 .markdown-preview-view h3,
+.markdown-rendered h3,
 .HyperMD-header-3 {
   font-size: 1.35em;
   color: var(--wiki-accent-light);
 }
 
 .markdown-preview-view h4,
+.markdown-rendered h4,
 .HyperMD-header-4 {
   font-size: 1.15em;
   color: var(--wiki-text-muted);
@@ -106,12 +129,14 @@
 }
 
 .markdown-preview-view h5,
+.markdown-rendered h5,
 .HyperMD-header-5 {
   font-size: 1em;
   color: var(--wiki-text-muted);
 }
 
 .markdown-preview-view h6,
+.markdown-rendered h6,
 .HyperMD-header-6 {
   font-size: 0.9em;
   color: var(--wiki-text-faint);
@@ -119,16 +144,18 @@
 }
 
 /* 标题前的装饰符号 */
-.markdown-preview-view h2::before {
-  content: "§";
+.markdown-preview-view h2::before,
+.markdown-rendered h2::before {
+  content: "\00a7";
   color: var(--wiki-accent);
   margin-right: 0.4em;
   font-weight: 400;
   opacity: 0.7;
 }
 
-.markdown-preview-view h3::before {
-  content: "›";
+.markdown-preview-view h3::before,
+.markdown-rendered h3::before {
+  content: "\203A";
   color: var(--wiki-accent-light);
   margin-right: 0.4em;
   font-weight: 700;
@@ -137,34 +164,48 @@
 /* --------------------------------------------------------------------------
    4. 段落与间距
    -------------------------------------------------------------------------- */
-.markdown-preview-view p {
+.markdown-preview-view p,
+.markdown-rendered p {
   margin-block-start: var(--wiki-paragraph-spacing);
   margin-block-end: var(--wiki-paragraph-spacing);
 }
 
 /* 列表优化 */
 .markdown-preview-view ul,
-.markdown-preview-view ol {
+.markdown-preview-view ol,
+.markdown-rendered ul,
+.markdown-rendered ol {
   padding-left: 1.6em;
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
 }
 
-.markdown-preview-view li {
+.markdown-preview-view li,
+.markdown-rendered li {
   margin-block-start: 0.25em;
   margin-block-end: 0.25em;
 }
 
 /* 任务列表 */
-.markdown-preview-view .task-list-item-checkbox {
+.markdown-preview-view .task-list-item-checkbox,
+.markdown-rendered .task-list-item-checkbox {
   margin-right: 0.5em;
   border-radius: 3px;
+}
+
+/* 已完成任务项样式 */
+.markdown-preview-view .task-list-item.is-checked,
+.markdown-rendered .task-list-item.is-checked {
+  color: var(--wiki-text-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--wiki-text-faint);
 }
 
 /* --------------------------------------------------------------------------
    5. 引用块（笔记摘录样式）
    -------------------------------------------------------------------------- */
 .markdown-preview-view blockquote,
+.markdown-rendered blockquote,
 .markdown-source-view.mod-cm6 .cm-quote {
   border-left: 3px solid var(--wiki-accent);
   background-color: var(--wiki-bg-secondary);
@@ -175,18 +216,28 @@
   color: var(--wiki-text-muted);
 }
 
-.markdown-preview-view blockquote p:first-child {
+.markdown-preview-view blockquote p:first-child,
+.markdown-rendered blockquote p:first-child {
   margin-top: 0;
 }
 
-.markdown-preview-view blockquote p:last-child {
+.markdown-preview-view blockquote p:last-child,
+.markdown-rendered blockquote p:last-child {
   margin-bottom: 0;
+}
+
+/* 多层引用块颜色递减 */
+.markdown-preview-view blockquote blockquote,
+.markdown-rendered blockquote blockquote {
+  border-left-color: var(--wiki-accent-light);
+  margin: 0.5em 0;
 }
 
 /* --------------------------------------------------------------------------
    6. 水平分割线
    -------------------------------------------------------------------------- */
 .markdown-preview-view hr,
+.markdown-rendered hr,
 .markdown-source-view.mod-cm6 .cm-line.HyperMD-hr {
   border: none;
   border-top: 1px solid var(--wiki-border);
@@ -194,8 +245,9 @@
   position: relative;
 }
 
-.markdown-preview-view hr::after {
-  content: "◆";
+.markdown-preview-view hr::after,
+.markdown-rendered hr::after {
+  content: "\25C6";
   color: var(--wiki-accent);
   position: absolute;
   left: 50%;
@@ -209,14 +261,16 @@
 /* --------------------------------------------------------------------------
    7. 表格优化
    -------------------------------------------------------------------------- */
-.markdown-preview-view table {
+.markdown-preview-view table,
+.markdown-rendered table {
   border-collapse: collapse;
   width: 100%;
   margin: 1em 0;
   font-size: 0.95em;
 }
 
-.markdown-preview-view th {
+.markdown-preview-view th,
+.markdown-rendered th {
   background-color: var(--wiki-bg-tertiary);
   color: var(--wiki-accent);
   font-weight: 600;
@@ -225,19 +279,81 @@
   border-bottom: 2px solid var(--wiki-accent);
 }
 
-.markdown-preview-view td {
+.markdown-preview-view td,
+.markdown-rendered td {
   padding: 0.5em 0.8em;
   border-bottom: 1px solid var(--wiki-border);
 }
 
-.markdown-preview-view tr:hover td {
+.markdown-preview-view tr:hover td,
+.markdown-rendered tr:hover td {
   background-color: var(--wiki-bg-secondary);
 }
 
 /* --------------------------------------------------------------------------
-   8. Frontmatter / Properties 区域美化
+   8. Dataview 专属样式
    -------------------------------------------------------------------------- */
-.markdown-preview-view .metadata-container {
+
+/* Dataview 表头加粗 + accent 色 */
+.markdown-preview-view .dataview th,
+.markdown-rendered .dataview th,
+.markdown-preview-view .table-view-table th,
+.markdown-rendered .table-view-table th {
+  background-color: var(--wiki-bg-tertiary);
+  color: var(--wiki-accent);
+  font-weight: 600;
+  border-bottom: 2px solid var(--wiki-accent);
+  padding: 0.5em 0.8em;
+}
+
+/* Dataview 表格行 */
+.markdown-preview-view .dataview td,
+.markdown-rendered .dataview td,
+.markdown-preview-view .table-view-table td,
+.markdown-rendered .table-view-table td {
+  padding: 0.4em 0.8em;
+  border-bottom: 1px solid var(--wiki-border);
+  font-size: 0.92em;
+}
+
+/* Dataview LIST 样式 */
+.markdown-preview-view .dataview.list-view-ul,
+.markdown-rendered .dataview.list-view-ul {
+  padding-left: 1.4em;
+}
+
+.markdown-preview-view .dataview.list-view-ul li,
+.markdown-rendered .dataview.list-view-ul li {
+  margin-block-start: 0.3em;
+  margin-block-end: 0.3em;
+}
+
+/* Dataview 结果中的链接保持双链样式 */
+.markdown-preview-view .dataview a,
+.markdown-rendered .dataview a {
+  color: var(--wiki-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.markdown-preview-view .dataview a:hover,
+.markdown-rendered .dataview a:hover {
+  color: var(--wiki-accent-light);
+}
+
+/* Dataview 空结果提示 */
+.markdown-preview-view .dataview.no-result,
+.markdown-rendered .dataview.no-result {
+  color: var(--wiki-text-faint);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+/* --------------------------------------------------------------------------
+   9. Frontmatter / Properties 区域美化
+   -------------------------------------------------------------------------- */
+.markdown-preview-view .metadata-container,
+.markdown-rendered .metadata-container {
   background-color: var(--wiki-bg-secondary);
   border: 1px solid var(--wiki-border);
   border-radius: 8px;
@@ -246,13 +362,24 @@
   font-size: 0.9em;
 }
 
-.markdown-preview-view .metadata-container .metadata-property-key {
+.markdown-preview-view .metadata-container .metadata-property-key,
+.markdown-rendered .metadata-container .metadata-property-key {
   color: var(--wiki-accent);
   font-weight: 500;
 }
 
+/* Properties 中的标签样式 */
+.markdown-preview-view .metadata-container .multi-select-pill,
+.markdown-rendered .metadata-container .multi-select-pill {
+  background-color: rgba(var(--wiki-accent-rgb), 0.12);
+  color: var(--wiki-accent);
+  border-radius: 4px;
+  padding: 0.1em 0.5em;
+  font-size: 0.85em;
+}
+
 /* --------------------------------------------------------------------------
-   9. 编辑模式优化
+   10. 编辑模式优化
    -------------------------------------------------------------------------- */
 .markdown-source-view.mod-cm6 .cm-gutters {
   background-color: transparent;
@@ -264,5 +391,88 @@
 }
 
 .markdown-source-view.mod-cm6 .cm-activeLine {
-  background-color: rgba(94, 129, 172, 0.06);
+  background-color: rgba(var(--wiki-accent-rgb), 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   11. 嵌入内容样式
+   -------------------------------------------------------------------------- */
+.markdown-preview-view .markdown-embed,
+.markdown-rendered .markdown-embed {
+  border: 1px solid var(--wiki-border);
+  border-radius: 8px;
+  padding: 0.8em 1.2em;
+  margin: 1em 0;
+  background-color: var(--wiki-bg-secondary);
+}
+
+.markdown-preview-view .markdown-embed-title,
+.markdown-rendered .markdown-embed-title {
+  color: var(--wiki-accent);
+  font-weight: 600;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-preview-view .markdown-embed-link,
+.markdown-rendered .markdown-embed-link {
+  color: var(--wiki-text-faint);
+  top: 0.6em;
+  right: 0.8em;
+}
+
+.markdown-preview-view .markdown-embed-link:hover,
+.markdown-rendered .markdown-embed-link:hover {
+  color: var(--wiki-accent);
+}
+
+/* --------------------------------------------------------------------------
+   12. 打印样式
+   -------------------------------------------------------------------------- */
+@media print {
+  .markdown-preview-view,
+  .markdown-rendered {
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000;
+  }
+
+  .markdown-preview-view h1,
+  .markdown-rendered h1 {
+    font-size: 1.8em;
+    color: #333;
+    page-break-after: avoid;
+  }
+
+  .markdown-preview-view h2,
+  .markdown-rendered h2 {
+    font-size: 1.4em;
+    color: #333;
+    page-break-after: avoid;
+  }
+
+  .markdown-preview-view .callout,
+  .markdown-rendered .callout {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .markdown-preview-view .internal-link,
+  .markdown-rendered .internal-link {
+    color: #333;
+    text-decoration: underline;
+    border-bottom: none;
+  }
+
+  .markdown-preview-view pre,
+  .markdown-rendered pre {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  .markdown-preview-view img,
+  .markdown-rendered img {
+    box-shadow: none;
+    max-width: 90%;
+  }
 }

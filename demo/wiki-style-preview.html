@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wiki 样式预览 — Transformer 架构</title>
+<style>
+/* ==================== wiki-reading.css v2 ==================== */
+.theme-dark {
+  --wiki-accent: #5e81ac;
+  --wiki-accent-light: #81a1c1;
+  --wiki-accent-rgb: 94, 129, 172;
+  --wiki-accent-light-rgb: 129, 161, 193;
+  --wiki-bg-primary: #1e1e1e;
+  --wiki-bg-secondary: #252526;
+  --wiki-bg-tertiary: #2d2d30;
+  --wiki-text-normal: #d4d4d4;
+  --wiki-text-muted: #808080;
+  --wiki-text-faint: #606060;
+  --wiki-border: #3e3e42;
+  --wiki-line-height: 1.75;
+  --wiki-paragraph-spacing: 0.8em;
+  --wiki-code-color: #d08770;
+  --wiki-shadow: rgba(0, 0, 0, 0.15);
+  --wiki-shadow-hover: rgba(0, 0, 0, 0.25);
+}
+.theme-light {
+  --wiki-accent: #4c7899;
+  --wiki-accent-light: #6c9abb;
+  --wiki-accent-rgb: 76, 120, 153;
+  --wiki-accent-light-rgb: 108, 154, 187;
+  --wiki-bg-primary: #fafafa;
+  --wiki-bg-secondary: #f5f5f5;
+  --wiki-bg-tertiary: #eeeeee;
+  --wiki-text-normal: #2e2e2e;
+  --wiki-text-muted: #666666;
+  --wiki-text-faint: #999999;
+  --wiki-border: #e0e0e0;
+  --wiki-line-height: 1.75;
+  --wiki-paragraph-spacing: 0.8em;
+  --wiki-code-color: #b85c2e;
+  --wiki-shadow: rgba(0, 0, 0, 0.08);
+  --wiki-shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+.markdown-preview-view, .markdown-rendered {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: var(--wiki-line-height);
+  color: var(--wiki-text-normal);
+}
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.markdown-preview-view h1,.markdown-preview-view h2,.markdown-preview-view h3,
+.markdown-preview-view h4,.markdown-preview-view h5,.markdown-preview-view h6 {
+  font-weight: 600; line-height: 1.3; margin-top: 1.8em; margin-bottom: 0.6em; letter-spacing: -0.01em;
+}
+.markdown-preview-view h1 { font-size: 2em; color: var(--wiki-accent); border-bottom: 2px solid var(--wiki-border); padding-bottom: 0.3em; }
+.markdown-preview-view h2 { font-size: 1.65em; color: var(--wiki-text-normal); border-bottom: 1px solid var(--wiki-border); padding-bottom: 0.25em; }
+.markdown-preview-view h3 { font-size: 1.35em; color: var(--wiki-accent-light); }
+.markdown-preview-view h4 { font-size: 1.15em; color: var(--wiki-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.markdown-preview-view h5 { font-size: 1em; color: var(--wiki-text-muted); }
+.markdown-preview-view h6 { font-size: 0.9em; color: var(--wiki-text-faint); font-weight: 500; }
+.markdown-preview-view h2::before { content: "\00a7"; color: var(--wiki-accent); margin-right: 0.4em; font-weight: 400; opacity: 0.7; }
+.markdown-preview-view h3::before { content: "\203A"; color: var(--wiki-accent-light); margin-right: 0.4em; font-weight: 700; }
+.markdown-preview-view p { margin-block-start: var(--wiki-paragraph-spacing); margin-block-end: var(--wiki-paragraph-spacing); }
+.markdown-preview-view ul,.markdown-preview-view ol { padding-left: 1.6em; margin-block-start: 0.5em; margin-block-end: 0.5em; }
+.markdown-preview-view li { margin-block-start: 0.25em; margin-block-end: 0.25em; }
+.markdown-preview-view .task-list-item-checkbox { margin-right: 0.5em; border-radius: 3px; }
+.markdown-preview-view .task-list-item.is-checked { color: var(--wiki-text-faint); text-decoration: line-through; text-decoration-color: var(--wiki-text-faint); }
+.markdown-preview-view blockquote {
+  border-left: 3px solid var(--wiki-accent); background-color: var(--wiki-bg-secondary);
+  padding: 0.8em 1em 0.8em 1.2em; margin: 1em 0; border-radius: 0 6px 6px 0; font-style: italic; color: var(--wiki-text-muted);
+}
+.markdown-preview-view blockquote p:first-child { margin-top: 0; }
+.markdown-preview-view blockquote p:last-child { margin-bottom: 0; }
+.markdown-preview-view blockquote blockquote { border-left-color: var(--wiki-accent-light); margin: 0.5em 0; }
+.markdown-preview-view hr { border: none; border-top: 1px solid var(--wiki-border); margin: 2.5em 0; position: relative; }
+.markdown-preview-view hr::after {
+  content: "\25C6"; color: var(--wiki-accent); position: absolute; left: 50%; top: -0.6em;
+  background: var(--wiki-bg-primary); padding: 0 0.8em; font-size: 0.75em; transform: translateX(-50%);
+}
+.markdown-preview-view table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.95em; }
+.markdown-preview-view th { background-color: var(--wiki-bg-tertiary); color: var(--wiki-accent); font-weight: 600; text-align: left; padding: 0.6em 0.8em; border-bottom: 2px solid var(--wiki-accent); }
+.markdown-preview-view td { padding: 0.5em 0.8em; border-bottom: 1px solid var(--wiki-border); }
+.markdown-preview-view tr:hover td { background-color: var(--wiki-bg-secondary); }
+.markdown-preview-view .dataview th, .markdown-preview-view .table-view-table th {
+  background-color: var(--wiki-bg-tertiary); color: var(--wiki-accent); font-weight: 600; border-bottom: 2px solid var(--wiki-accent); padding: 0.5em 0.8em;
+}
+.markdown-preview-view .dataview td, .markdown-preview-view .table-view-table td { padding: 0.4em 0.8em; border-bottom: 1px solid var(--wiki-border); font-size: 0.92em; }
+.markdown-preview-view .dataview.list-view-ul { padding-left: 1.4em; }
+.markdown-preview-view .dataview.list-view-ul li { margin-block-start: 0.3em; margin-block-end: 0.3em; }
+.markdown-preview-view .dataview a { color: var(--wiki-accent); text-decoration: none; font-weight: 500; }
+.markdown-preview-view .dataview a:hover { color: var(--wiki-accent-light); }
+.markdown-preview-view .dataview.no-result { color: var(--wiki-text-faint); font-style: italic; font-size: 0.9em; }
+.markdown-preview-view .metadata-container {
+  background-color: var(--wiki-bg-secondary); border: 1px solid var(--wiki-border);
+  border-radius: 8px; padding: 0.8em 1em; margin-bottom: 1.5em; font-size: 0.9em;
+}
+.markdown-preview-view .metadata-container .metadata-property-key { color: var(--wiki-accent); font-weight: 500; }
+.markdown-preview-view .metadata-container .multi-select-pill {
+  background-color: rgba(var(--wiki-accent-rgb), 0.12); color: var(--wiki-accent);
+  border-radius: 4px; padding: 0.1em 0.5em; font-size: 0.85em; display: inline-block; margin: 0.1em;
+}
+.markdown-preview-view .markdown-embed {
+  border: 1px solid var(--wiki-border); border-radius: 8px; padding: 0.8em 1.2em;
+  margin: 1em 0; background-color: var(--wiki-bg-secondary);
+}
+.markdown-preview-view .markdown-embed-title { color: var(--wiki-accent); font-weight: 600; font-size: 1em; margin-bottom: 0.5em; }
+
+/* ==================== wiki-callouts.css v2 ==================== */
+.theme-dark {
+  --callout-note: #5e81ac; --callout-abstract: #a3be8c; --callout-info: #81a1c1;
+  --callout-todo: #88c0d0; --callout-tip: #ebcb8b; --callout-success: #a3be8c;
+  --callout-warning: #d08770; --callout-danger: #bf616a; --callout-example: #b48ead;
+  --callout-quote: #888888; --callout-question: #81a1c1;
+  --callout-bg-opacity: 0.08; --callout-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.theme-light {
+  --callout-note: #4c7899; --callout-abstract: #5a8a3a; --callout-info: #5a87a8;
+  --callout-todo: #3a9baf; --callout-tip: #b8860b; --callout-success: #5a8a3a;
+  --callout-warning: #c25e3a; --callout-danger: #b04050; --callout-example: #8e5e87;
+  --callout-quote: #777777; --callout-question: #5a87a8;
+  --callout-bg-opacity: 0.06; --callout-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.callout {
+  border-radius: 8px; border: none; padding: 1em 1.2em; margin: 1em 0;
+  position: relative; overflow: hidden; background-color: var(--wiki-bg-secondary);
+  box-shadow: var(--callout-shadow);
+}
+.callout-title { font-weight: 600; font-size: 0.95em; gap: 0.5em; margin-bottom: 0.5em; display: flex; align-items: center; }
+.callout-icon { display: flex; align-items: center; margin-right: 0.4em; }
+.callout-content { font-size: 0.95em; line-height: 1.7; }
+.callout-content > p:first-child { margin-top: 0; }
+.callout-content > p:last-child { margin-bottom: 0; }
+.callout::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 8px 0 0 8px; }
+.callout[data-callout="note"] { background-color: rgba(94,129,172,var(--callout-bg-opacity)); }
+.callout[data-callout="note"]::before { background-color: var(--callout-note); }
+.callout[data-callout="note"] .callout-title { color: var(--callout-note); }
+.callout[data-callout="abstract"] { background-color: rgba(163,190,140,var(--callout-bg-opacity)); }
+.callout[data-callout="abstract"]::before { background-color: var(--callout-abstract); }
+.callout[data-callout="abstract"] .callout-title { color: var(--callout-abstract); }
+.callout[data-callout="info"] { background-color: rgba(129,161,193,var(--callout-bg-opacity)); }
+.callout[data-callout="info"]::before { background-color: var(--callout-info); }
+.callout[data-callout="info"] .callout-title { color: var(--callout-info); }
+.callout[data-callout="tip"] { background-color: rgba(235,203,139,var(--callout-bg-opacity)); }
+.callout[data-callout="tip"]::before { background-color: var(--callout-tip); }
+.callout[data-callout="tip"] .callout-title { color: var(--callout-tip); }
+.callout[data-callout="success"] { background-color: rgba(163,190,140,calc(var(--callout-bg-opacity) + 0.02)); }
+.callout[data-callout="success"]::before { background-color: var(--callout-success); }
+.callout[data-callout="success"] .callout-title { color: var(--callout-success); }
+.callout[data-callout="warning"] { background-color: rgba(208,135,112,var(--callout-bg-opacity)); }
+.callout[data-callout="warning"]::before { background-color: var(--callout-warning); }
+.callout[data-callout="warning"] .callout-title { color: var(--callout-warning); }
+.callout[data-callout="danger"] { background-color: rgba(191,97,106,var(--callout-bg-opacity)); }
+.callout[data-callout="danger"]::before { background-color: var(--callout-danger); }
+.callout[data-callout="danger"] .callout-title { color: var(--callout-danger); }
+.callout[data-callout="example"] { background-color: rgba(180,142,173,var(--callout-bg-opacity)); }
+.callout[data-callout="example"]::before { background-color: var(--callout-example); }
+.callout[data-callout="example"] .callout-title { color: var(--callout-example); }
+.callout[data-callout="quote"] { background-color: rgba(128,128,128,calc(var(--callout-bg-opacity)*0.5)); font-style: italic; }
+.callout[data-callout="quote"]::before { background-color: var(--callout-quote); }
+.callout[data-callout="quote"] .callout-title { color: var(--callout-quote); }
+.callout[data-callout="question"] { background-color: rgba(129,161,193,var(--callout-bg-opacity)); }
+.callout[data-callout="question"]::before { background-color: var(--callout-question); }
+.callout[data-callout="question"] .callout-title { color: var(--callout-question); }
+.callout.is-collapsible > .callout-title { cursor: pointer; }
+.callout.is-collapsed { padding-bottom: 0.8em; }
+.callout.is-collapsed > .callout-title { margin-bottom: 0; }
+.callout .callout-fold { transition: transform 0.15s ease; }
+.callout.is-collapsed .callout-fold { transform: rotate(-90deg); }
+.callout .callout { margin: 0.5em 0; box-shadow: none; }
+.callout-content ul,.callout-content ol { padding-left: 1.4em; margin-block-start: 0.3em; margin-block-end: 0.3em; }
+.callout-content pre { margin: 0.5em 0; }
+
+/* ==================== wiki-components.css v2 ==================== */
+.markdown-preview-view .internal-link {
+  color: var(--wiki-accent); text-decoration: none; border-bottom: 1px dotted var(--wiki-accent);
+  transition: color 0.15s ease, border-bottom-style 0.15s ease, background-color 0.15s ease; font-weight: 500;
+}
+.markdown-preview-view .internal-link:hover {
+  color: var(--wiki-accent-light); border-bottom-style: solid;
+  background-color: rgba(var(--wiki-accent-rgb), 0.08); border-radius: 2px;
+}
+.markdown-preview-view .internal-link.is-unresolved { color: var(--wiki-text-muted); border-bottom: 1px dotted var(--wiki-text-muted); opacity: 0.65; }
+.markdown-preview-view .external-link {
+  color: var(--wiki-accent-light); text-decoration: none; border-bottom: 1px solid rgba(var(--wiki-accent-light-rgb), 0.4);
+  transition: all 0.15s ease; background-image: none; padding-right: 1.3em; position: relative;
+}
+.markdown-preview-view .external-link::after { content: "\2197"; font-size: 0.75em; margin-left: 0.2em; opacity: 0.6; position: absolute; right: 0; top: 0.1em; }
+.markdown-preview-view .external-link:hover { border-bottom-color: var(--wiki-accent-light); background-color: rgba(var(--wiki-accent-light-rgb), 0.06); }
+.markdown-preview-view a.tag {
+  background-color: rgba(var(--wiki-accent-rgb), 0.1); color: var(--wiki-accent);
+  padding: 0.15em 0.5em; border-radius: 4px; font-size: 0.85em; text-decoration: none; font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.markdown-preview-view a.tag:hover { background-color: rgba(var(--wiki-accent-rgb), 0.2); }
+.markdown-preview-view img {
+  display: block; margin-left: auto; margin-right: auto; max-width: 100%; border-radius: 6px;
+  box-shadow: 0 2px 8px var(--wiki-shadow); transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.markdown-preview-view code {
+  background-color: var(--wiki-bg-tertiary); color: var(--wiki-code-color); padding: 0.15em 0.4em;
+  border-radius: 4px; font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", "Noto Sans Mono", "Fira Code", Consolas, monospace; font-size: 0.9em; font-weight: 500;
+}
+.markdown-preview-view pre {
+  background-color: var(--wiki-bg-secondary); border-radius: 8px; padding: 1em 1.2em; margin: 1em 0;
+  overflow-x: auto; border: 1px solid var(--wiki-border); position: relative;
+}
+.markdown-preview-view pre code { background-color: transparent; color: var(--wiki-text-normal); padding: 0; font-size: 0.9em; line-height: 1.6; font-weight: 400; }
+.markdown-preview-view .dataview tr:hover td, .markdown-preview-view .table-view-table tr:hover td { background-color: rgba(var(--wiki-accent-rgb), 0.04); }
+.markdown-preview-view .dataview.list-view-ul li::marker { color: var(--wiki-accent); }
+.markdown-preview-view .dataview.small-text { color: var(--wiki-text-faint); font-size: 0.85em; }
+.markdown-preview-view mark { background-color: rgba(var(--wiki-accent-rgb), 0.2); color: var(--wiki-text-normal); border-radius: 2px; padding: 0.05em 0.15em; }
+
+/* ==================== 页面框架 ==================== */
+body { margin: 0; padding: 0; background: var(--wiki-bg-primary); min-height: 100vh; }
+.app-frame { max-width: 800px; margin: 0 auto; padding: 2em 1em 4em; }
+.theme-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 999;
+  background: var(--wiki-bg-tertiary); color: var(--wiki-accent); border: 1px solid var(--wiki-border);
+  border-radius: 8px; padding: 0.5em 1em; cursor: pointer; font-size: 0.85em; font-weight: 500;
+  transition: all 0.15s ease;
+}
+.theme-toggle:hover { background: rgba(var(--wiki-accent-rgb), 0.12); }
+.fake-sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+  background: var(--wiki-bg-secondary); border-right: 1px solid var(--wiki-border);
+  padding: 1em 0.5em; overflow-y: auto; font-size: 0.85em;
+}
+.fake-sidebar .nav-folder-title { border-radius: 4px; margin: 1px 4px; padding: 3px 6px; color: var(--wiki-text-normal); }
+.fake-sidebar .nav-folder-title-content::before { content: "\25B8 "; color: var(--wiki-accent); font-size: 0.85em; }
+.fake-sidebar .nav-folder-title.is-collapsed .nav-folder-title-content::before { content: "\25BE "; }
+.fake-sidebar .nav-file-title { border-radius: 4px; margin: 1px 4px; padding: 3px 6px 3px 20px; color: var(--wiki-text-normal); }
+.fake-sidebar .nav-file-title.is-active { background-color: rgba(var(--wiki-accent-rgb), 0.15); color: var(--wiki-accent); font-weight: 600; }
+.fake-sidebar .nav-file-title:hover, .fake-sidebar .nav-folder-title:hover { background-color: var(--wiki-bg-tertiary); }
+.app-frame { margin-left: 240px; }
+@media (max-width: 900px) { .fake-sidebar { display: none; } .app-frame { margin-left: 0; } }
+
+/* 模拟 Obsidian 滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--wiki-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--wiki-text-faint); }
+
+/* callout icon 用 emoji 模拟 */
+.ci { font-style: normal; }
+</style>
+</head>
+<body>
+
+<div class="fake-sidebar">
+  <div class="nav-folder-title"><span class="nav-folder-title-content">wiki</span></div>
+  <div class="nav-folder-title is-collapsed"><span class="nav-folder-title-content">mocs</span></div>
+  <div class="nav-folder-title is-collapsed"><span class="nav-folder-title-content">entities</span></div>
+  <div class="nav-folder-title"><span class="nav-folder-title-content">concepts</span></div>
+  <div class="nav-file-title is-active">Transformer</div>
+  <div class="nav-file-title">Attention Mechanism</div>
+  <div class="nav-file-title">BERT</div>
+  <div class="nav-folder-title is-collapsed"><span class="nav-folder-title-content">sources</span></div>
+  <div class="nav-folder-title is-collapsed"><span class="nav-folder-title-content">syntheses</span></div>
+</div>
+
+<button class="theme-toggle" onclick="toggleTheme()">🌙 暗色 / ☀️ 亮色</button>
+
+<div class="app-frame">
+<div class="markdown-preview-view is-readable-line-width">
+<div class="markdown-preview-sizer">
+
+<div class="metadata-container">
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">title</span> &nbsp; Transformer 架构</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">type</span> &nbsp; concept</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">complexity</span> &nbsp; ⭐⭐⭐⭐⭐</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">tags</span> &nbsp;
+    <span class="multi-select-pill">ai</span>
+    <span class="multi-select-pill">nlp</span>
+    <span class="multi-select-pill">技术</span>
+    <span class="multi-select-pill">architecture</span>
+  </div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">sources</span> &nbsp; raw/02-papers/attention-is-all-you-need.md</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">created</span> &nbsp; 2026-06-04</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">last_updated</span> &nbsp; 2026-08-15</div>
+  <div style="margin-bottom: 0.3em;"><span class="metadata-property-key">last_refreshed</span> &nbsp; 2026-08-15</div>
+  <div><span class="metadata-property-key">status</span> &nbsp; finished</div>
+</div>
+
+<h1>Transformer 架构</h1>
+
+<p>Transformer 是一种完全基于 <a class="internal-link" href="#">注意力机制</a> 的深度学习架构，由 Google 团队在 2017 年提出。它彻底改变了 <a class="internal-link" href="#">NLP</a> 领域，是 <a class="internal-link" href="#">GPT</a>、<a class="internal-link" href="#">BERT</a> 等现代大语言模型的基石。</p>
+
+> [!important] 核心贡献
+> 用自注意力（Self-Attention）取代了 RNN 和 CNN，实现了完全并行的序列计算。这一突破使得训练超大规模模型成为可能。
+
+<h2>一句话定义</h2>
+
+<p>Transformer 是一种基于 ==自注意力机制== 的编码器-解码器架构，通过并行计算处理序列数据，无需循环或卷积操作。</p>
+
+<h2>为什么重要</h2>
+
+<p>在 Transformer 出现之前，序列建模主要依赖 <code>RNN</code> 和 <code>LSTM</code>，它们存在三个核心问题：</p>
+
+<ul>
+  <li><strong>串行计算</strong>：必须按顺序处理每个 token，无法并行化</li>
+  <li><strong>长距离依赖弱</strong>：信息在长序列中逐渐衰减</li>
+  <li><strong>梯度问题</strong>：梯度消失/爆炸限制了对长序列的学习</li>
+</ul>
+
+<p>Transformer 通过自注意力机制一次性解决了这三个问题。详见 <a class="external-link" href="https://arxiv.org/abs/1706.03762">原始论文 ↗</a>。</p>
+
+<h2>核心原理</h2>
+
+<h3>关键要素</h3>
+
+<ol>
+  <li><strong>编码器（Encoder）</strong>：将输入序列编码为连续表示，堆叠 N=6 层</li>
+  <li><strong>解码器（Decoder）</strong>：自回归生成输出序列，同样堆叠 N=6 层</li>
+  <li><strong>自注意力层</strong>：计算序列中每个位置与其他所有位置的关系</li>
+  <li><strong>前馈网络（FFN）</strong>：对每个位置独立做非线性变换</li>
+</ol>
+
+<h3>运作机制</h3>
+
+<p>注意力计算的核心公式：</p>
+
+<pre><code>Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V</code></pre>
+
+<p>其中 <code>Q</code>（Query）、<code>K</code>（Key）、<code>V</code>（Value）分别由输入线性变换得到，<code>d_k</code> 是 Key 的维度。</p>
+
+> [!example] 多头注意力
+> 多头注意力将 Q、K、V 投影到 h=8 个不同的子空间，分别计算注意力后拼接：
+> ```
+> MultiHead(Q,K,V) = Concat(head_1, ..., head_h) W^O
+> head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)
+> ```
+> 这使得模型能同时关注不同位置的不同表示子空间。
+
+<h2>类比理解</h2>
+
+<blockquote>
+  <p>就像一个会议室里所有人同时交换名片一样——每个人（Query）都可以直接看向其他任何人（Key），并根据相关性决定从谁那里获取多少信息（Value），而不需要像传话游戏那样一个接一个地传递。</p>
+</blockquote>
+
+<h2>演进脉络</h2>
+
+<table>
+  <thead>
+    <tr><th>时间</th><th>里程碑</th><th>关键人物/来源</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2014</td><td>Bahdanau 提出 Attention 机制</td><td>Bahdanau et al.</td></tr>
+    <tr><td>2017.06</td><td>Transformer 架构发表</td><td><a class="internal-link" href="#">Vaswani</a> et al. (Google)</td></tr>
+    <tr><td>2018.10</td><td>BERT：仅编码器，预训练+微调</td><td><a class="internal-link" href="#">Google AI</a></td></tr>
+    <tr><td>2018.06</td><td>GPT：仅解码器，自回归生成</td><td><a class="internal-link" href="#">OpenAI</a></td></tr>
+    <tr><td>2020.05</td><td>GPT-3：175B 参数，涌现能力</td><td>OpenAI</td></tr>
+    <tr><td>2026</td><td>万亿参数模型成为标配</td><td>多家机构</td></tr>
+  </tbody>
+</table>
+
+<h2>常见误区</h2>
+
+<ul>
+  <li><strong>误区 1</strong>：Transformer 只能用于 NLP
+    <ul><li><em>正确理解</em>：Vision Transformer (ViT) 已证明其在图像、音频、视频等模态同样有效</li></ul>
+  </li>
+  <li><strong>误区 2</strong>：注意力权重等于重要性
+    <ul><li><em>正确理解</em>：注意力权重反映的是 Query-Key 的相似度，不直接等同于特征重要性</li></ul>
+  </li>
+</ul>
+
+<hr>
+
+<h2>Callout 样式展示</h2>
+
+> [!note] Note 笔记
+> 这是一段笔记型 Callout，用于记录一般性信息。
+
+> [!tip] Tip 提示
+> 使用 <code>--wiki-accent</code> CSS 变量可以自定义整个知识库的主题色。
+
+> [!warning] Warning 警告
+> 修改 <code>.obsidian/</code> 下的 JSON 配置时务必先备份，JSON 语法错误会导致 Obsidian 无法打开 Vault。
+
+> [!danger] Danger 危险
+> 绝对不要修改 <code>raw/</code> 目录下的原始文件。这是知识库不可变层的唯一约束。
+
+> [!success] Success 成功
+> 知识库初始化完成！所有 CSS 片段已自动启用。
+
+> [!question]- FAQ 常见问题（点击展开）
+> <p><strong>Q: Dataview 查询不显示结果怎么办？</strong></p>
+> <p>A: 检查页面 frontmatter 中是否有 <code>type</code> 字段，Dataview 依赖这些字段进行过滤。</p>
+
+> [!example] Example 示例
+> 这是一个示例 Callout，用于展示代码和用法。
+
+> [!quote] Quote 引用
+> "Attention Is All You Need" — 这篇论文的标题本身就是一个时代宣言。
+
+> [!abstract] Abstract 摘要
+> Transformer 架构通过自注意力机制实现了序列建模的范式转移，成为现代深度学习的核心基础设施。
+
+<h2>Dataview 模拟输出</h2>
+
+<h3>概念库（Dataview TABLE）</h3>
+
+<div class="block-language-dataview">
+<table class="dataview table-view-table">
+  <thead>
+    <tr><th>复杂度</th><th>更新日期</th><th>状态</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a class="internal-link" href="#">Transformer</a></td><td>2026-08-15</td><td>finished</td></tr>
+    <tr><td><a class="internal-link" href="#">Attention Mechanism</a></td><td>2026-08-10</td><td>finished</td></tr>
+    <tr><td><a class="internal-link" href="#">BERT</a></td><td>2026-07-22</td><td>finished</td></tr>
+    <tr><td><a class="internal-link" href="#">GPT</a></td><td>2026-08-14</td><td>finished</td></tr>
+    <tr><td><a class="internal-link is-unresolved" href="#">Mixture of Experts</a></td><td>2026-08-01</td><td>draft</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>草稿页面（Dataview LIST）</h3>
+
+<div class="block-language-dataview">
+<ul class="dataview list-view-ul">
+  <li><a class="internal-link is-unresolved" href="#">Mixture of Experts</a></li>
+  <li><a class="internal-link is-unresolved" href="#">Flash Attention</a></li>
+  <li><a class="internal-link is-unresolved" href="#">RLHF</a></li>
+</ul>
+</div>
+
+<p class="dataview small-text">共 3 个草稿页面 · 最后更新：2026-08-15</p>
+
+<h2>时效性更新</h2>
+
+<div class="callout" data-callout="info">
+  <div class="callout-title"><span class="callout-icon"><span class="ci">ℹ</span></span> 联网刷新 — 2026-08-15</div>
+  <div class="callout-content">
+    <p>已通过联网搜索验证并更新本页面内容。</p>
+    <ul>
+      <li><strong>追加</strong>：GPT-5 已于 2026 年 Q1 发布，参数规模达 3 万亿 — 来源：<a class="external-link" href="#">openai.com/blog/gpt-5 ↗</a></li>
+      <li><strong>更新</strong>：最大模型参数量从 175B → 3T — 来源：<a class="external-link" href="#">arxiv.org/abs/2603.12345 ↗</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2>知识冲突</h2>
+
+<table>
+  <thead>
+    <tr><th>观点 A</th><th>观点 B</th><th>我的判断</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scaling Law 在 10T 参数后开始饱和</td>
+      <td>Scaling Law 仍未见饱和迹象</td>
+      <td>⏳ 待确认，存在实验条件差异</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout" data-callout="warning">
+  <div class="callout-title"><span class="callout-icon"><span class="ci">⚠</span></span> 需要人工确认</div>
+  <div class="callout-content">
+    <p>联网发现的信息与知识库现有内容存在冲突，请核实后决定保留哪个版本。</p>
+  </div>
+</div>
+
+<h2>应用场景</h2>
+
+<table>
+  <thead>
+    <tr><th>场景</th><th>说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>机器翻译</td><td>Transformer 最初的设计目标，Google Translate 已全面采用</td></tr>
+    <tr><td>文本生成</td><td>GPT 系列证明自回归生成能力可涌现复杂推理</td></tr>
+    <tr><td>代码补全</td><td>Codex / Copilot 基于 GPT 架构</td></tr>
+    <tr><td>图像生成</td><td>DiT (Diffusion Transformer) 将 Transformer 引入扩散模型</td></tr>
+  </tbody>
+</table>
+
+<h2>关联连接</h2>
+
+<ul>
+  <li><a class="internal-link" href="#">Attention Mechanism</a> — 核心机制详解</li>
+  <li><a class="internal-link" href="#">BERT</a> — 仅使用编码器的变体</li>
+  <li><a class="internal-link" href="#">GPT</a> — 仅使用解码器的变体</li>
+  <li><a class="internal-link" href="#">Vaswani</a> — 论文第一作者</li>
+  <li><a class="internal-link is-unresolved" href="#">Flash Attention</a> — 注意力计算加速（待创建）</li>
+</ul>
+
+<h2>待深入</h2>
+
+<ul>
+  <li class="task-list-item is-checked"><input type="checkbox" checked disabled> 补充数学公式/形式化定义</li>
+  <li class="task-list-item is-checked"><input type="checkbox" checked disabled> 补充历史演进脉络</li>
+  <li class="task-list-item"><input type="checkbox" disabled> 添加 ViT 多模态扩展案例</li>
+  <li class="task-list-item"><input type="checkbox" disabled> 对比 Mamba / State Space Model 架构</li>
+</ul>
+
+<h2>嵌入内容示例</h2>
+
+<div class="markdown-embed">
+  <div class="markdown-embed-title">🔗 嵌入自：Attention Mechanism</div>
+  <p>注意力机制的核心思想是：对于给定的查询（Query）和一组键值对（Key-Value pairs），通过计算查询与每个键的相似度得到权重，再对对应的值进行加权求和。</p>
+  <p>公式：<code>Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V</code></p>
+</div>
+
+<hr>
+
+<p style="text-align: center; color: var(--wiki-text-faint); font-size: 0.85em; font-style: italic;">
+  本页面由 AI 维护 · 最后更新：2026-08-15 · 联网刷新：2026-08-15
+</p>
+
+</div>
+</div>
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  if (html.classList.contains('theme-dark')) {
+    html.classList.remove('theme-dark');
+    html.classList.add('theme-light');
+  } else {
+    html.classList.remove('theme-light');
+    html.classList.add('theme-dark');
+  }
+}
+
+document.querySelectorAll('.callout.is-collapsible').forEach(c => {
+  c.addEventListener('click', () => c.classList.toggle('is-collapsed'));
+});
+</script>
+
+</body>
+</html>

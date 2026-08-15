@@ -1,7 +1,43 @@
 /* ==========================================================================
    Wiki Callouts — 知识库 Callout 样式增强
    语义化颜色 + 现代卡片设计
+   v2: 修复亮色模式可见性、CSS 变量化、补全别名
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Callout 颜色变量（按主题区分）
+   -------------------------------------------------------------------------- */
+.theme-dark {
+  --callout-note: #5e81ac;
+  --callout-abstract: #a3be8c;
+  --callout-info: #81a1c1;
+  --callout-todo: #88c0d0;
+  --callout-tip: #ebcb8b;
+  --callout-success: #a3be8c;
+  --callout-warning: #d08770;
+  --callout-danger: #bf616a;
+  --callout-example: #b48ead;
+  --callout-quote: #888888;
+  --callout-question: #81a1c1;
+  --callout-bg-opacity: 0.08;
+  --callout-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.theme-light {
+  --callout-note: #4c7899;
+  --callout-abstract: #5a8a3a;
+  --callout-info: #5a87a8;
+  --callout-todo: #3a9baf;
+  --callout-tip: #b8860b;
+  --callout-success: #5a8a3a;
+  --callout-warning: #c25e3a;
+  --callout-danger: #b04050;
+  --callout-example: #8e5e87;
+  --callout-quote: #777777;
+  --callout-question: #5a87a8;
+  --callout-bg-opacity: 0.06;
+  --callout-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 
 /* --------------------------------------------------------------------------
    基础 Callout 重置
@@ -13,8 +49,8 @@
   margin: 1em 0;
   position: relative;
   overflow: hidden;
-  background-color: var(--wiki-bg-secondary, #252526);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--wiki-bg-secondary);
+  box-shadow: var(--callout-shadow);
 }
 
 .callout-title {
@@ -57,170 +93,177 @@
 
 /* --------------------------------------------------------------------------
    各类 Callout 定义
+   使用 CSS 变量，自动适配明暗模式
    -------------------------------------------------------------------------- */
 
 /* NOTE / 笔记 */
 .callout[data-callout="note"] {
-  background-color: rgba(94, 129, 172, 0.08);
+  background-color: rgba(94, 129, 172, var(--callout-bg-opacity));
 }
 .callout[data-callout="note"]::before {
-  background-color: #5e81ac;
+  background-color: var(--callout-note);
 }
 .callout[data-callout="note"] .callout-title {
-  color: #5e81ac;
+  color: var(--callout-note);
 }
 
 /* ABSTRACT / SUMMARY / TLDR / 摘要 */
 .callout[data-callout="abstract"],
 .callout[data-callout="summary"],
 .callout[data-callout="tldr"] {
-  background-color: rgba(163, 190, 140, 0.08);
+  background-color: rgba(163, 190, 140, var(--callout-bg-opacity));
 }
 .callout[data-callout="abstract"]::before,
 .callout[data-callout="summary"]::before,
 .callout[data-callout="tldr"]::before {
-  background-color: #a3be8c;
+  background-color: var(--callout-abstract);
 }
 .callout[data-callout="abstract"] .callout-title,
 .callout[data-callout="summary"] .callout-title,
 .callout[data-callout="tldr"] .callout-title {
-  color: #a3be8c;
+  color: var(--callout-abstract);
 }
 
 /* INFO / 信息 */
 .callout[data-callout="info"] {
-  background-color: rgba(129, 161, 193, 0.08);
+  background-color: rgba(129, 161, 193, var(--callout-bg-opacity));
 }
 .callout[data-callout="info"]::before {
-  background-color: #81a1c1;
+  background-color: var(--callout-info);
 }
 .callout[data-callout="info"] .callout-title {
-  color: #81a1c1;
+  color: var(--callout-info);
 }
 
 /* TODO / 待办 */
 .callout[data-callout="todo"] {
-  background-color: rgba(136, 192, 208, 0.08);
+  background-color: rgba(136, 192, 208, var(--callout-bg-opacity));
 }
 .callout[data-callout="todo"]::before {
-  background-color: #88c0d0;
+  background-color: var(--callout-todo);
 }
 .callout[data-callout="todo"] .callout-title {
-  color: #88c0d0;
+  color: var(--callout-todo);
 }
 
 /* TIP / HINT / IMPORTANT / 提示 */
 .callout[data-callout="tip"],
 .callout[data-callout="hint"],
 .callout[data-callout="important"] {
-  background-color: rgba(235, 203, 139, 0.08);
+  background-color: rgba(235, 203, 139, var(--callout-bg-opacity));
 }
 .callout[data-callout="tip"]::before,
 .callout[data-callout="hint"]::before,
 .callout[data-callout="important"]::before {
-  background-color: #ebcb8b;
+  background-color: var(--callout-tip);
 }
 .callout[data-callout="tip"] .callout-title,
 .callout[data-callout="hint"] .callout-title,
 .callout[data-callout="important"] .callout-title {
-  color: #ebcb8b;
+  color: var(--callout-tip);
 }
 
 /* SUCCESS / CHECK / DONE / 成功 */
 .callout[data-callout="success"],
 .callout[data-callout="check"],
 .callout[data-callout="done"] {
-  background-color: rgba(163, 190, 140, 0.1);
+  background-color: rgba(163, 190, 140, calc(var(--callout-bg-opacity) + 0.02));
 }
 .callout[data-callout="success"]::before,
 .callout[data-callout="check"]::before,
 .callout[data-callout="done"]::before {
-  background-color: #a3be8c;
+  background-color: var(--callout-success);
 }
 .callout[data-callout="success"] .callout-title,
 .callout[data-callout="check"] .callout-title,
 .callout[data-callout="done"] .callout-title {
-  color: #a3be8c;
+  color: var(--callout-success);
 }
 
 /* WARNING / CAUTION / ATTENTION / 警告 */
 .callout[data-callout="warning"],
 .callout[data-callout="caution"],
 .callout[data-callout="attention"] {
-  background-color: rgba(208, 135, 112, 0.08);
+  background-color: rgba(208, 135, 112, var(--callout-bg-opacity));
 }
 .callout[data-callout="warning"]::before,
 .callout[data-callout="caution"]::before,
 .callout[data-callout="attention"]::before {
-  background-color: #d08770;
+  background-color: var(--callout-warning);
 }
 .callout[data-callout="warning"] .callout-title,
 .callout[data-callout="caution"] .callout-title,
 .callout[data-callout="attention"] .callout-title {
-  color: #d08770;
+  color: var(--callout-warning);
 }
 
-/* DANGER / ERROR / BUG / FAIL / 危险 */
+/* DANGER / ERROR / BUG / FAIL / MISSING / 危险 */
 .callout[data-callout="danger"],
 .callout[data-callout="error"],
 .callout[data-callout="bug"],
-.callout[data-callout="fail"] {
-  background-color: rgba(191, 97, 106, 0.08);
+.callout[data-callout="fail"],
+.callout[data-callout="missing"],
+.callout[data-callout="failure"] {
+  background-color: rgba(191, 97, 106, var(--callout-bg-opacity));
 }
 .callout[data-callout="danger"]::before,
 .callout[data-callout="error"]::before,
 .callout[data-callout="bug"]::before,
-.callout[data-callout="fail"]::before {
-  background-color: #bf616a;
+.callout[data-callout="fail"]::before,
+.callout[data-callout="missing"]::before,
+.callout[data-callout="failure"]::before {
+  background-color: var(--callout-danger);
 }
 .callout[data-callout="danger"] .callout-title,
 .callout[data-callout="error"] .callout-title,
 .callout[data-callout="bug"] .callout-title,
-.callout[data-callout="fail"] .callout-title {
-  color: #bf616a;
+.callout[data-callout="fail"] .callout-title,
+.callout[data-callout="missing"] .callout-title,
+.callout[data-callout="failure"] .callout-title {
+  color: var(--callout-danger);
 }
 
 /* EXAMPLE / 示例 */
 .callout[data-callout="example"] {
-  background-color: rgba(180, 142, 173, 0.08);
+  background-color: rgba(180, 142, 173, var(--callout-bg-opacity));
 }
 .callout[data-callout="example"]::before {
-  background-color: #b48ead;
+  background-color: var(--callout-example);
 }
 .callout[data-callout="example"] .callout-title {
-  color: #b48ead;
+  color: var(--callout-example);
 }
 
 /* QUOTE / CITE / 引用 */
 .callout[data-callout="quote"],
 .callout[data-callout="cite"] {
-  background-color: rgba(216, 222, 233, 0.05);
+  background-color: rgba(128, 128, 128, calc(var(--callout-bg-opacity) * 0.5));
   font-style: italic;
 }
 .callout[data-callout="quote"]::before,
 .callout[data-callout="cite"]::before {
-  background-color: #d8dee9;
+  background-color: var(--callout-quote);
 }
 .callout[data-callout="quote"] .callout-title,
 .callout[data-callout="cite"] .callout-title {
-  color: #d8dee9;
+  color: var(--callout-quote);
 }
 
 /* QUESTION / FAQ / HELP / 问题 */
 .callout[data-callout="question"],
 .callout[data-callout="faq"],
 .callout[data-callout="help"] {
-  background-color: rgba(129, 161, 193, 0.08);
+  background-color: rgba(129, 161, 193, var(--callout-bg-opacity));
 }
 .callout[data-callout="question"]::before,
 .callout[data-callout="faq"]::before,
 .callout[data-callout="help"]::before {
-  background-color: #81a1c1;
+  background-color: var(--callout-question);
 }
 .callout[data-callout="question"] .callout-title,
 .callout[data-callout="faq"] .callout-title,
 .callout[data-callout="help"] .callout-title {
-  color: #81a1c1;
+  color: var(--callout-question);
 }
 
 /* --------------------------------------------------------------------------
@@ -234,9 +277,38 @@
   padding-bottom: 0.8em;
 }
 
+.callout.is-collapsed > .callout-title {
+  margin-bottom: 0;
+}
+
+/* 折叠箭头动画 */
+.callout .callout-fold {
+  transition: transform 0.15s ease;
+}
+
+.callout.is-collapsed .callout-fold {
+  transform: rotate(-90deg);
+}
+
 /* --------------------------------------------------------------------------
    嵌套 Callout 间距
    -------------------------------------------------------------------------- */
 .callout .callout {
+  margin: 0.5em 0;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Callout 内部列表间距修正
+   -------------------------------------------------------------------------- */
+.callout-content ul,
+.callout-content ol {
+  padding-left: 1.4em;
+  margin-block-start: 0.3em;
+  margin-block-end: 0.3em;
+}
+
+/* Callout 内部代码块 */
+.callout-content pre {
   margin: 0.5em 0;
 }

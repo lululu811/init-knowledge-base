@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>init-knowledge-base 架构思维导图</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1b26;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #header {
+      background: rgba(30, 33, 46, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 10;
+    }
+    #header h1 {
+      font-size: 15px;
+      color: #7aa2f7;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    #header .subtitle {
+      font-size: 12px;
+      color: #565f89;
+      margin-left: auto;
+    }
+    #header button {
+      background: rgba(122, 162, 247, 0.12);
+      border: 1px solid rgba(122, 162, 247, 0.25);
+      color: #7aa2f7;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    #header button:hover {
+      background: rgba(122, 162, 247, 0.2);
+      border-color: rgba(122, 162, 247, 0.4);
+    }
+    #header button.active {
+      background: rgba(122, 162, 247, 0.25);
+      border-color: rgba(122, 162, 247, 0.5);
+    }
+    #mindmap-container {
+      flex: 1;
+      width: 100%;
+      position: relative;
+    }
+    #mindmap {
+      width: 100%;
+      height: 100%;
+    }
+    .markmap-node text {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.17"></script>
+</head>
+<body>
+  <div id="header">
+    <h1>🧠 init-knowledge-base 架构思维导图</h1>
+    <button id="btn-architecture" class="active" onclick="switchMap('architecture')">项目架构</button>
+    <button id="btn-workflow" onclick="switchMap('workflow')">工作流程</button>
+    <button id="btn-skills" onclick="switchMap('skills')">技能关系</button>
+    <span class="subtitle">Markmap · 点击节点可折叠/展开 · 滚轮缩放 · 拖拽平移</span>
+  </div>
+  <div id="mindmap-container">
+    <svg id="mindmap"></svg>
+  </div>
+
+  <script>
+    const maps = {
+      architecture: `# init-knowledge-base
+
+## 📥 raw/ (不可变层)
+### 01-articles/
+- 网页剪藏
+- 文章 Markdown
+### 02-papers/
+- 论文
+- 研报
+- PDF 文献
+### 03-transcripts/
+- 视频转录文案
+- 播客转录
+### 04-meeting_notes/
+- 会议笔记
+- 课堂笔记
+### 09-archive/
+- 已处理归档
+- ⛔ 禁止读取
+
+## 🧠 wiki/ (编译输出层)
+### index.md
+- Dataview 动态仪表盘
+- 概念库/实体库/综合分析
+- 时效性监控
+### log.md
+- Append-only 操作日志
+- ingest/query/lint/refresh/canvas
+### concepts/
+- 框架
+- 方法论
+- 理论
+### entities/
+- 人物
+- 公司
+- 工具
+- 产品
+### sources/
+- 资料摘要
+- 可信度评估
+### syntheses/
+- 综合分析报告
+- 跨源对比
+### mocs/
+- MOC-技术
+- MOC-商业
+- MOC-人物
+- MOC-待整理
+
+## 🖼️ assets/
+- 图片
+- PDF
+- 媒体附件
+
+## 📝 templates/
+### entity.md
+- 通用字段 + 人物/公司/产品分类型
+### concept.md
+- 定义/原理/演进脉络/误区
+### source.md
+- 元信息/摘要/可信度
+### synthesis.md
+- 研究问题/证据表/结论
+
+## ⚙️ .obsidian/
+### app.json
+- 默认阅读模式
+- 附件路径 assets/
+### appearance.json
+- 主题色 #5e81ac
+- 3 个 CSS 片段自动启用
+### templates.json
+- 模板文件夹预设
+### graph.json
+- 5 色分组着色
+### snippets/
+#### wiki-reading.css
+- 标题层级/段落/引用/表格
+- Dataview 样式
+- 打印支持
+#### wiki-callouts.css
+- 语义化颜色
+- 折叠动画
+- 明暗模式适配
+#### wiki-components.css
+- 双链/外链/标签
+- 代码块语言标签
+- 图谱节点颜色
+
+## 🤖 .claude/skills/
+### ingest
+- 增量编译 (state.json)
+- 讨论确认模式
+- URL 网页摄入
+- 批量摘要报告
+### query
+- 索引检索
+- 双链标注来源
+### lint
+- 死链检测
+- 孤儿页面
+- 概念空缺检测
+- 研究方向建议
+### refresh
+- 联网搜索验证
+- 按领域刷新周期
+- 冲突标记
+- refresh-state.json
+### obsidian-markdown
+- 语法规范 (隐式调用)
+### json-canvas
+- 知识图谱可视化
+- .canvas 文件生成
+`,
+
+      workflow: `# 知识库工作流
+
+## 📥 摄入阶段 (ingest)
+### 输入来源
+#### raw/ 本地文件
+- Markdown 文章
+- PDF 论文
+- 转录文案
+#### URL 网页摄入
+- 自动抓取网页
+- HTML → Markdown
+- 存入 raw/01-articles/
+### 处理流程
+#### 步骤 1: 检查状态
+- 对比哈希
+- 跳过已归档
+#### 步骤 2: 读取源文件
+- .md 直接读取
+- .pdf 提取文本
+#### 步骤 3: 提炼核心
+- 主旨/实体/概念
+- 非中文翻译
+#### 步骤 3.5: 讨论确认
+- 展示提取结果
+- 用户可修正
+#### 步骤 4: 创建来源摘要
+- wiki/sources/
+#### 步骤 5: 知识网络化
+- 创建/更新实体页
+- 创建/更新概念页
+- 增量合并
+#### 步骤 6: 更新注册表
+- index.md
+- log.md
+#### 步骤 7: 归档源文件
+- → raw/09-archive/
+#### 步骤 8: 更新状态
+- ingest-state.json
+
+## 🔍 查询阶段 (query)
+### 流程
+#### 通过 index.md 检索
+#### 深度阅读相关页面
+#### 用 [[wikilink]] 标注来源回答
+
+## 🔧 健康检查 (lint)
+### 检查项
+#### 死链检测
+- [[链接]] 无目标
+#### 孤儿页面
+- 无入链/出链
+#### 概念空缺
+- 被引用 ≥2 次但无页面
+- 按引用次数分级
+#### 重名检测
+- 编辑距离 < 3
+#### 矛盾检测
+- 知识冲突区块
+### 输出
+- 健康度评分
+- 研究方向建议
+
+## 🌐 联网刷新 (refresh)
+### 触发条件
+#### AI/技术: 30天
+#### 商业: 45天
+#### 科学: 90天
+#### 其他: 180天
+### 流程
+#### 提取关键词
+#### 联网搜索
+#### 对比新旧内容
+#### 更新或标记冲突
+#### 更新 last_refreshed
+### 状态追踪
+- refresh-state.json
+
+## 🎨 可视化 (canvas)
+### 输出
+#### .canvas 文件
+#### 节点类型
+- 文本节点
+- 文件节点
+- 链接节点
+- 分组节点
+`,
+
+      skills: `# Agent Skills 关系图
+
+## 核心编译
+### ingest
+- 输入: raw/ 文件 或 URL
+- 输出: wiki/ 页面
+- 依赖: obsidian-markdown
+- 状态: ingest-state.json
+- 触发: /ingest [path|url]
+
+## 检索问答
+### query
+- 输入: 用户问题
+- 依赖: wiki/index.md
+- 输出: 带来源的回答
+- 触发: /query <问题>
+
+## 健康维护
+### lint
+- 输入: wiki/ 全扫描
+- 输出: 健康报告
+- 检测: 死链/孤儿/空缺/冲突
+- 触发: /lint
+
+## 时效更新
+### refresh
+- 输入: 陈旧 wiki 页面
+- 依赖: 联网搜索
+- 输出: 更新/冲突标记
+- 状态: refresh-state.json
+- 触发: /refresh
+
+## 可视化
+### json-canvas
+- 输入: wiki/ 页面+双链
+- 输出: .canvas 文件
+- 触发: /canvas
+
+## 基础设施
+### obsidian-markdown
+- 类型: 隐式调用
+- 职责: 语法规范
+- 被依赖: ingest/query/lint/refresh
+
+## 数据流
+### raw/ → ingest → wiki/
+### wiki/ → query → 回答
+### wiki/ → lint → 报告
+### wiki/ → refresh → 更新
+### wiki/ → canvas → 图谱
+
+## 状态文件
+### .claude/ingest-state.json
+- 文件哈希
+- 处理状态
+- 输出页面列表
+### .claude/refresh-state.json
+- 刷新状态
+- 上次搜索日期
+- 发现的新信息
+`
+    };
+
+    let currentMap = 'architecture';
+    let mm;
+
+    function renderMap(key) {
+      const md = maps[key];
+      const { root } = markmapLib.transformer.transform(md);
+      if (!mm) {
+        mm = Markmap.create('#mindmap', {
+          duration: 400,
+          maxWidth: 320,
+          spacingHorizontal: 100,
+          spacingVertical: 14,
+          paddingX: 12,
+          autoFit: true,
+          color: (node) => {
+            const colors = ['#7aa2f7", '#9ece6a", "#e0af68", "#f7768e", "#bb9af7", "#7dcfff", "#c0caf5"];
+            const depth = node.state.depth || 0;
+            return colors[depth % colors.length];
+          },
+        }, root);
+      } else {
+        mm.setData(root);
+        mm.fit();
+      }
+    }
+
+    function switchMap(key) {
+      currentMap = key;
+      document.querySelectorAll('#header button').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + key).classList.add('active');
+      renderMap(key);
+    }
+
+    window.addEventListener('load', () => {
+      renderMap('architecture');
+    });
+  </script>
+</body>
+</html>
